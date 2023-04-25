@@ -1,0 +1,4 @@
+nbdev
+quarto
+pandas
+pyarrow
