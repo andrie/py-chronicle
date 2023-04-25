@@ -1,5 +1,6 @@
 nbdev
 notebook
 pandas
+pre-commit
 pyarrow
 quarto
