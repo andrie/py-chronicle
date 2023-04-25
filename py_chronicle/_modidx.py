@@ -5,4 +5,4 @@ d = { 'settings': { 'branch': 'main',
                 'doc_host': 'https://andrie.github.io',
                 'git_url': 'https://github.com/andrie/py-chronicle',
                 'lib_path': 'py_chronicle'},
-  'syms': {'py_chronicle.core': {'py_chronicle.core.foo': ('core.html#foo', 'py_chronicle/core.py')}}}
+  'syms': {'py_chronicle.core': {'py_chronicle.core.read_chronicle': ('core.html#read_chronicle', 'py_chronicle/core.py')}}}

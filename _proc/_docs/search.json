@@ -1,0 +1,30 @@
+[
+  {
+    "objectID": "core.html",
+    "href": "core.html",
+    "title": "core",
+    "section": "",
+    "text": "source\n\nread_chronicle\n\n read_chronicle (dataset)\n\n\nz = read_chronicle(\"../data/metrics.parquet\")\nassert type(z) == pl.dataframe.frame.DataFrame\n\nz = read_chronicle(\"../data/logs.parquet\")\nassert type(z) == pl.dataframe.frame.DataFrame\n\nz\n\n\n\nshape: (78, 6)servicehostosattributesbodytimestampstrstrstrlist[struct[2]]strdatetime[ms]\"workbench\"\"rstudio-workbe…\"linux\"[{\"data\",\"120\"}, {\"pid\",\"2.36E+02\"}, … {\"type\",\"session_suspend\"}]\"{\"pid\":236,\"us…2023-04-03 18:01:26.665\"workbench\"\"rstudio-workbe…\"linux\"[{\"data\",\"\"}, {\"pid\",\"2.36E+02\"}, … {\"type\",\"session_exit\"}]\"{\"pid\":236,\"us…2023-04-03 18:01:26.761\"connect\"\"rstudio-connec…\"linux\"[{\"user_role\",\"publisher\"}, {\"user_guid\",\"085ba4be-01b5-478b-877c-321368924c89\"}, … {\"type\",\"audit\"}]\"{\"action\":\"add…2023-04-03 19:30:35.698\"connect\"\"rstudio-connec…\"linux\"[{\"log.file.name\",\"audit.json\"}, {\"actor_description\",\"Auth Provider\"}, … {\"entry_id\",\"3.032E+03\"}]\"{\"action\":\"add…2023-04-03 19:30:35.698\"connect\"\"rstudio-connec…\"linux\"[{\"action\",\"add_group_member\"}, {\"actor_id\",\"0E+00\"}, … {\"log.file.name\",\"audit.json\"}]\"{\"action\":\"add…2023-04-03 19:30:35.698\"connect\"\"rstudio-connec…\"linux\"[{\"log.file.name\",\"audit.json\"}, {\"group_id\",\"6.4E+01\"}, … {\"actor_description\",\"Auth Provider\"}]\"{\"action\":\"add…2023-04-03 19:30:35.699\"connect\"\"rstudio-connec…\"linux\"[{\"actor_role\",\"system\"}, {\"level\",\"info\"}, … {\"user_guid\",\"085ba4be-01b5-478b-877c-321368924c89\"}]\"{\"action\":\"add…2023-04-03 19:30:35.699\"connect\"\"rstudio-connec…\"linux\"[{\"time\",\"2023-04-03T19:30:35.679Z\"}, {\"user_role\",\"publisher\"}, … {\"msg\",\"Added user Ming Beckwith (ming) to group App Group - 1Password\"}]\"{\"action\":\"add…2023-04-03 19:30:35.699\"connect\"\"rstudio-connec…\"linux\"[{\"level\",\"info\"}, {\"user_id\",\"3.2E+01\"}, … {\"msg\",\"Added user Ming Beckwith (ming) to group App Group - Snyk\"}]\"{\"action\":\"add…2023-04-03 19:30:35.699\"connect\"\"rstudio-connec…\"linux\"[{\"group_guid\",\"c545b0ec-b66b-4d2e-9d54-ecb8531c65d5\"}, {\"actor_id\",\"0E+00\"}, … {\"user_guid\",\"085ba4be-01b5-478b-877c-321368924c89\"}]\"{\"action\":\"add…2023-04-03 19:30:35.898\"connect\"\"rstudio-connec…\"linux\"[{\"msg\",\"Added group div-engineering-platform\"}, {\"time\",\"2023-04-03T19:30:35.713Z\"}, … {\"actor_description\",\"Auth Provider\"}]\"{\"action\":\"add…2023-04-03 19:30:35.898\"connect\"\"rstudio-connec…\"linux\"[{\"actor_description\",\"Auth Provider\"}, {\"entry_id\",\"3.04E+03\"}, … {\"actor_role\",\"system\"}]\"{\"action\":\"add…2023-04-03 19:30:35.898………………\"workbench\"\"rstudio-workbe…\"linux\"[{\"type\",\"session_start\"}, {\"data\",\"\"}, … {\"log.file.name\",\"r-sessions.jsonl\"}]\"{\"pid\":236,\"us…2023-04-10 13:42:07.960\"workbench\"\"rstudio-workbe…\"linux\"[{\"username\",\"james\"}, {\"timestamp\",\"1.681132479E+12\"}, … {\"pid\",\"1.781E+03\"}]\"{\"pid\":1781,\"u…2023-04-10 13:14:40.064\"workbench\"\"rstudio-workbe…\"linux\"[{\"timestamp\",\"1.681134106E+12\"}, {\"type\",\"session_quit\"}, … {\"username\",\"james\"}]\"{\"pid\":237,\"us…2023-04-10 13:41:47.065\"workbench\"\"rstudio-workbe…\"linux\"[{\"username\",\"james\"}, {\"timestamp\",\"1.681132535E+12\"}, … {\"log.file.name\",\"r-sessions.jsonl\"}]\"{\"pid\":236,\"us…2023-04-10 13:15:35.864\"workbench\"\"rstudio-workbe…\"linux\"[{\"type\",\"session_exit\"}, {\"data\",\"\"}, … {\"timestamp\",\"1.681132535E+12\"}]\"{\"pid\":236,\"us…2023-04-10 13:15:35.864\"workbench\"\"rstudio-workbe…\"linux\"[{\"pid\",\"1.781E+03\"}, {\"username\",\"james\"}, … {\"log.file.name\",\"r-sessions.jsonl\"}]\"{\"pid\":1781,\"u…2023-04-10 13:14:39.961\"workbench\"\"rstudio-workbe…\"linux\"[{\"data\",\"\"}, {\"log.file.name\",\"r-sessions.jsonl\"}, … {\"type\",\"session_start\"}]\"{\"pid\":236,\"us…2023-04-10 13:15:13.561\"workbench\"\"rstudio-workbe…\"linux\"[{\"timestamp\",\"1.681132913E+12\"}, {\"type\",\"session_start\"}, … {\"username\",\"james\"}]\"{\"pid\":237,\"us…2023-04-10 13:21:53.361\"workbench\"\"rstudio-workbe…\"linux\"[{\"pid\",\"1.061E+03\"}, {\"username\",\"lisa.anders\"}, … {\"data\",\"\"}]\"{\"pid\":1061,\"u…2023-04-11 17:14:54.265\"workbench\"\"rstudio-workbe…\"linux\"[{\"data\",\"\"}, {\"pid\",\"2.35E+02\"}, … {\"type\",\"session_start\"}]\"{\"pid\":235,\"us…2023-04-11 17:17:31.265\"workbench\"\"rstudio-workbe…\"linux\"[{\"data\",\"120\"}, {\"pid\",\"2.35E+02\"}, … {\"type\",\"session_suspend\"}]\"{\"pid\":235,\"us…2023-04-11 19:28:52.665\"workbench\"\"rstudio-workbe…\"linux\"[{\"pid\",\"2.35E+02\"}, {\"username\",\"lisa.anders\"}, … {\"log.file.name\",\"r-sessions.jsonl\"}]\"{\"pid\":235,\"us…2023-04-11 19:28:52.665"
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "py-chronicle",
+    "section": "",
+    "text": "** Work in progress **\nThe purpose of this experimental package is to expose functionality to make it easy to read, filter and manipulate chronicle parquet files."
+  },
+  {
+    "objectID": "index.html#install",
+    "href": "index.html#install",
+    "title": "py-chronicle",
+    "section": "Install",
+    "text": "Install\npip install py_chronicle"
+  },
+  {
+    "objectID": "index.html#how-to-use",
+    "href": "index.html#how-to-use",
+    "title": "py-chronicle",
+    "section": "How to use",
+    "text": "How to use\nSome examples.\n\nread_chronicle(\"./data/metrics.parquet\")\n\n2"
+  }
+]

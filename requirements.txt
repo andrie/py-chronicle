@@ -1,6 +1,8 @@
 nbdev
 notebook
 pandas
+polars
 pre-commit
 pyarrow
 quarto
+s3fs
