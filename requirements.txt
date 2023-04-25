@@ -1,4 +1,5 @@
 nbdev
-quarto
+notebook
 pandas
 pyarrow
+quarto
