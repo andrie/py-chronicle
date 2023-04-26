@@ -10,8 +10,17 @@ make it easy to read, filter and manipulate chronicle parquet files.
 
 ## Install
 
+The package is not yet available on PyPi.
+
 ``` sh
+#| include: False
 pip install py_chronicle
+```
+
+You can install from github:
+
+``` sh
+pip install git+https://github.com/andrie/py-chronicle
 ```
 
 ## How to use
@@ -28,7 +37,7 @@ read_chronicle("./data/v1/metrics").head()
   text-align: right;
 }
 </style>
-<small>shape: (5, 13)</small><table border="1" class="dataframe"><thead><tr><th>service</th><th>host</th><th>os</th><th>attributes</th><th>name</th><th>description</th><th>unit</th><th>type</th><th>timestamp</th><th>value_float</th><th>value_int</th><th>value_uint</th><th>value_column</th></tr><tr><td>str</td><td>str</td><td>str</td><td>list[struct[2]]</td><td>str</td><td>str</td><td>str</td><td>str</td><td>datetime[ms]</td><td>f64</td><td>i64</td><td>u64</td><td>str</td></tr></thead><tbody><tr><td>&quot;connect-metric…</td><td>&quot;rstudio-connec…</td><td>&quot;linux&quot;</td><td>[{&quot;host&quot;,&quot;rstudio-connect-68785f94cc-qzvrm&quot;}]</td><td>&quot;rsconnect_syst…</td><td>&quot;Graphite metri…</td><td>&quot;&quot;</td><td>&quot;gauge&quot;</td><td>2023-04-03 16:24:29.980</td><td>15823.0</td><td>0</td><td>0</td><td>&quot;value_float&quot;</td></tr><tr><td>&quot;connect-metric…</td><td>&quot;rstudio-connec…</td><td>&quot;linux&quot;</td><td>[{&quot;host&quot;,&quot;rstudio-connect-68785f94cc-qzvrm&quot;}]</td><td>&quot;rsconnect_syst…</td><td>&quot;Graphite metri…</td><td>&quot;&quot;</td><td>&quot;gauge&quot;</td><td>2023-04-03 16:43:29.980</td><td>15823.0</td><td>0</td><td>0</td><td>&quot;value_float&quot;</td></tr><tr><td>&quot;connect-metric…</td><td>&quot;rstudio-connec…</td><td>&quot;linux&quot;</td><td>[{&quot;host&quot;,&quot;rstudio-connect-68785f94cc-qzvrm&quot;}]</td><td>&quot;rsconnect_syst…</td><td>&quot;Graphite metri…</td><td>&quot;&quot;</td><td>&quot;gauge&quot;</td><td>2023-04-03 16:46:29.980</td><td>15823.0</td><td>0</td><td>0</td><td>&quot;value_float&quot;</td></tr><tr><td>&quot;connect-metric…</td><td>&quot;rstudio-connec…</td><td>&quot;linux&quot;</td><td>[{&quot;host&quot;,&quot;rstudio-connect-68785f94cc-qzvrm&quot;}]</td><td>&quot;rsconnect_syst…</td><td>&quot;Graphite metri…</td><td>&quot;&quot;</td><td>&quot;gauge&quot;</td><td>2023-04-03 16:11:29.980</td><td>15823.0</td><td>0</td><td>0</td><td>&quot;value_float&quot;</td></tr><tr><td>&quot;connect-metric…</td><td>&quot;rstudio-connec…</td><td>&quot;linux&quot;</td><td>[{&quot;host&quot;,&quot;rstudio-connect-68785f94cc-qzvrm&quot;}]</td><td>&quot;rsconnect_syst…</td><td>&quot;Graphite metri…</td><td>&quot;&quot;</td><td>&quot;gauge&quot;</td><td>2023-04-03 16:29:29.980</td><td>15823.0</td><td>0</td><td>0</td><td>&quot;value_float&quot;</td></tr></tbody></table></div>
+<small>shape: (5, 13)</small><table border="1" class="dataframe"><thead><tr><th>service</th><th>host</th><th>os</th><th>attributes</th><th>name</th><th>description</th><th>unit</th><th>type</th><th>timestamp</th><th>value_float</th><th>value_int</th><th>value_uint</th><th>value_column</th></tr><tr><td>str</td><td>str</td><td>str</td><td>list[struct[2]]</td><td>str</td><td>str</td><td>str</td><td>str</td><td>datetime[ms]</td><td>f64</td><td>i64</td><td>u64</td><td>str</td></tr></thead><tbody><tr><td>&quot;workbench-metr…</td><td>&quot;rstudio-workbe…</td><td>&quot;linux&quot;</td><td>[{&quot;host&quot;,&quot;rstudio-workbench-6b9658c77f-mn8hj&quot;}]</td><td>&quot;rstudio_system…</td><td>&quot;Graphite metri…</td><td>&quot;&quot;</td><td>&quot;gauge&quot;</td><td>2023-04-03 16:02:20.574</td><td>3.0074e9</td><td>0</td><td>0</td><td>&quot;value_float&quot;</td></tr><tr><td>&quot;workbench-metr…</td><td>&quot;rstudio-workbe…</td><td>&quot;linux&quot;</td><td>[{&quot;host&quot;,&quot;rstudio-workbench-6b9658c77f-mn8hj&quot;}]</td><td>&quot;rstudio_system…</td><td>&quot;Graphite metri…</td><td>&quot;&quot;</td><td>&quot;gauge&quot;</td><td>2023-04-03 16:02:20.574</td><td>3.2212e9</td><td>0</td><td>0</td><td>&quot;value_float&quot;</td></tr><tr><td>&quot;workbench-metr…</td><td>&quot;rstudio-workbe…</td><td>&quot;linux&quot;</td><td>[{&quot;host&quot;,&quot;rstudio-workbench-6b9658c77f-mn8hj&quot;}]</td><td>&quot;rstudio_system…</td><td>&quot;Graphite metri…</td><td>&quot;&quot;</td><td>&quot;gauge&quot;</td><td>2023-04-03 16:02:20.574</td><td>2.13864448e8</td><td>0</td><td>0</td><td>&quot;value_float&quot;</td></tr><tr><td>&quot;connect-metric…</td><td>&quot;rstudio-connec…</td><td>&quot;linux&quot;</td><td>[{&quot;host&quot;,&quot;rstudio-connect-68785f94cc-qzvrm&quot;}]</td><td>&quot;rsconnect_syst…</td><td>&quot;Graphite metri…</td><td>&quot;&quot;</td><td>&quot;gauge&quot;</td><td>2023-04-03 16:24:29.980</td><td>5.7377e9</td><td>0</td><td>0</td><td>&quot;value_float&quot;</td></tr><tr><td>&quot;connect-metric…</td><td>&quot;rstudio-connec…</td><td>&quot;linux&quot;</td><td>[{&quot;host&quot;,&quot;rstudio-connect-68785f94cc-qzvrm&quot;}]</td><td>&quot;rsconnect_syst…</td><td>&quot;Graphite metri…</td><td>&quot;&quot;</td><td>&quot;gauge&quot;</td><td>2023-04-03 16:24:29.980</td><td>7.04741376e8</td><td>0</td><td>0</td><td>&quot;value_float&quot;</td></tr></tbody></table></div>
 
 ``` python
 read_chronicle("./data/v1/logs").head()

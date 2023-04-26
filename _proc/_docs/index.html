@@ -219,14 +219,18 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>The purpose of this experimental package is to expose functionality to make it easy to read, filter and manipulate chronicle parquet files.</p>
 <section id="install" class="level2">
 <h2 class="anchored" data-anchor-id="install">Install</h2>
-<div class="sourceCode" id="cb1"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">pip</span> install py_chronicle</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The package is not yet available on PyPi.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">#| include: False</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="ex">pip</span> install py_chronicle</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>You can install from github:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">pip</span> install git+https://github.com/andrie/py-chronicle</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="how-to-use" class="level2">
 <h2 class="anchored" data-anchor-id="how-to-use">How to use</h2>
 <p>Some examples.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>read_chronicle(<span class="st">"./data/v1/metrics"</span>).head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display">
+<div class="cell" data-execution_count="9">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>read_chronicle(<span class="st">"./data/v1/metrics"</span>).head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="9">
 
 <div><style>
 .dataframe > thead > tr > th,
@@ -234,12 +238,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   text-align: right;
 }
 </style>
-<small>shape: (5, 13)</small><table class="dataframe table table-sm table-striped"><thead><tr><th>service</th><th>host</th><th>os</th><th>attributes</th><th>name</th><th>description</th><th>unit</th><th>type</th><th>timestamp</th><th>value_float</th><th>value_int</th><th>value_uint</th><th>value_column</th></tr><tr><td>str</td><td>str</td><td>str</td><td>list[struct[2]]</td><td>str</td><td>str</td><td>str</td><td>str</td><td>datetime[ms]</td><td>f64</td><td>i64</td><td>u64</td><td>str</td></tr></thead><tbody><tr><td>"workbench-metr…</td><td>"rstudio-workbe…</td><td>"linux"</td><td>[]</td><td>"scrape_samples…</td><td>"The number of …</td><td>""</td><td>"gauge"</td><td>2023-04-03 16:02:20.574</td><td>69.0</td><td>0</td><td>0</td><td>"value_float"</td></tr><tr><td>"workbench-metr…</td><td>"rstudio-workbe…</td><td>"linux"</td><td>[{"version","go1.14.6"}]</td><td>"go_info"</td><td>"Information ab…</td><td>""</td><td>"gauge"</td><td>2023-04-03 16:02:20.574</td><td>1.0</td><td>0</td><td>0</td><td>"value_float"</td></tr><tr><td>"workbench-metr…</td><td>"rstudio-workbe…</td><td>"linux"</td><td>[]</td><td>"go_memstats_mc…</td><td>"Number of byte…</td><td>""</td><td>"gauge"</td><td>2023-04-03 16:02:20.574</td><td>16384.0</td><td>0</td><td>0</td><td>"value_float"</td></tr><tr><td>"workbench-metr…</td><td>"rstudio-workbe…</td><td>"linux"</td><td>[{"host","rstudio-workbench-6b9658c77f-mn8hj"}]</td><td>"rstudio_system…</td><td>"Graphite metri…</td><td>""</td><td>"gauge"</td><td>2023-04-03 16:02:20.574</td><td>0.0</td><td>0</td><td>0</td><td>"value_float"</td></tr><tr><td>"workbench-metr…</td><td>"rstudio-workbe…</td><td>"linux"</td><td>[]</td><td>"go_memstats_ms…</td><td>"Number of byte…</td><td>""</td><td>"gauge"</td><td>2023-04-03 16:02:20.574</td><td>65536.0</td><td>0</td><td>0</td><td>"value_float"</td></tr></tbody></table></div>
+<small>shape: (5, 13)</small><table class="dataframe table table-sm table-striped"><thead><tr><th>service</th><th>host</th><th>os</th><th>attributes</th><th>name</th><th>description</th><th>unit</th><th>type</th><th>timestamp</th><th>value_float</th><th>value_int</th><th>value_uint</th><th>value_column</th></tr><tr><td>str</td><td>str</td><td>str</td><td>list[struct[2]]</td><td>str</td><td>str</td><td>str</td><td>str</td><td>datetime[ms]</td><td>f64</td><td>i64</td><td>u64</td><td>str</td></tr></thead><tbody><tr><td>"workbench-metr…</td><td>"rstudio-workbe…</td><td>"linux"</td><td>[{"host","rstudio-workbench-6b9658c77f-mn8hj"}]</td><td>"rstudio_system…</td><td>"Graphite metri…</td><td>""</td><td>"gauge"</td><td>2023-04-03 16:02:20.574</td><td>3.0074e9</td><td>0</td><td>0</td><td>"value_float"</td></tr><tr><td>"workbench-metr…</td><td>"rstudio-workbe…</td><td>"linux"</td><td>[{"host","rstudio-workbench-6b9658c77f-mn8hj"}]</td><td>"rstudio_system…</td><td>"Graphite metri…</td><td>""</td><td>"gauge"</td><td>2023-04-03 16:02:20.574</td><td>3.2212e9</td><td>0</td><td>0</td><td>"value_float"</td></tr><tr><td>"workbench-metr…</td><td>"rstudio-workbe…</td><td>"linux"</td><td>[{"host","rstudio-workbench-6b9658c77f-mn8hj"}]</td><td>"rstudio_system…</td><td>"Graphite metri…</td><td>""</td><td>"gauge"</td><td>2023-04-03 16:02:20.574</td><td>2.13864448e8</td><td>0</td><td>0</td><td>"value_float"</td></tr><tr><td>"connect-metric…</td><td>"rstudio-connec…</td><td>"linux"</td><td>[{"host","rstudio-connect-68785f94cc-qzvrm"}]</td><td>"rsconnect_syst…</td><td>"Graphite metri…</td><td>""</td><td>"gauge"</td><td>2023-04-03 16:24:29.980</td><td>5.7377e9</td><td>0</td><td>0</td><td>"value_float"</td></tr><tr><td>"connect-metric…</td><td>"rstudio-connec…</td><td>"linux"</td><td>[{"host","rstudio-connect-68785f94cc-qzvrm"}]</td><td>"rsconnect_syst…</td><td>"Graphite metri…</td><td>""</td><td>"gauge"</td><td>2023-04-03 16:24:29.980</td><td>7.04741376e8</td><td>0</td><td>0</td><td>"value_float"</td></tr></tbody></table></div>
 </div>
 </div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>read_chronicle(<span class="st">"./data/v1/logs"</span>).head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display">
+<div class="cell" data-execution_count="10">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>read_chronicle(<span class="st">"./data/v1/logs"</span>).head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="10">
 
 <div><style>
 .dataframe > thead > tr > th,

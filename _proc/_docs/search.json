@@ -1,5 +1,26 @@
 [
   {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "py-chronicle",
+    "section": "",
+    "text": "** Work in progress **\nThe purpose of this experimental package is to expose functionality to make it easy to read, filter and manipulate chronicle parquet files."
+  },
+  {
+    "objectID": "index.html#install",
+    "href": "index.html#install",
+    "title": "py-chronicle",
+    "section": "Install",
+    "text": "Install\nThe package is not yet available on PyPi.\n#| include: False\npip install py_chronicle\nYou can install from github:\npip install git+https://github.com/andrie/py-chronicle"
+  },
+  {
+    "objectID": "index.html#how-to-use",
+    "href": "index.html#how-to-use",
+    "title": "py-chronicle",
+    "section": "How to use",
+    "text": "How to use\nSome examples.\n\nread_chronicle(\"./data/v1/metrics\").head()\n\n\n\nshape: (5, 13)servicehostosattributesnamedescriptionunittypetimestampvalue_floatvalue_intvalue_uintvalue_columnstrstrstrlist[struct[2]]strstrstrstrdatetime[ms]f64i64u64str\"workbench-metr…\"rstudio-workbe…\"linux\"[{\"host\",\"rstudio-workbench-6b9658c77f-mn8hj\"}]\"rstudio_system…\"Graphite metri…\"\"\"gauge\"2023-04-03 16:02:20.5743.0074e900\"value_float\"\"workbench-metr…\"rstudio-workbe…\"linux\"[{\"host\",\"rstudio-workbench-6b9658c77f-mn8hj\"}]\"rstudio_system…\"Graphite metri…\"\"\"gauge\"2023-04-03 16:02:20.5743.2212e900\"value_float\"\"workbench-metr…\"rstudio-workbe…\"linux\"[{\"host\",\"rstudio-workbench-6b9658c77f-mn8hj\"}]\"rstudio_system…\"Graphite metri…\"\"\"gauge\"2023-04-03 16:02:20.5742.13864448e800\"value_float\"\"connect-metric…\"rstudio-connec…\"linux\"[{\"host\",\"rstudio-connect-68785f94cc-qzvrm\"}]\"rsconnect_syst…\"Graphite metri…\"\"\"gauge\"2023-04-03 16:24:29.9805.7377e900\"value_float\"\"connect-metric…\"rstudio-connec…\"linux\"[{\"host\",\"rstudio-connect-68785f94cc-qzvrm\"}]\"rsconnect_syst…\"Graphite metri…\"\"\"gauge\"2023-04-03 16:24:29.9807.04741376e800\"value_float\"\n\n\n\nread_chronicle(\"./data/v1/logs\").head()\n\n\n\nshape: (5, 6)servicehostosattributesbodytimestampstrstrstrlist[struct[2]]strdatetime[ms]\"workbench\"\"rstudio-workbe…\"linux\"[{\"data\",\"120\"}, {\"pid\",\"2.36E+02\"}, … {\"type\",\"session_suspend\"}]\"{\"pid\":236,\"us…2023-04-03 18:01:26.665\"workbench\"\"rstudio-workbe…\"linux\"[{\"data\",\"\"}, {\"pid\",\"2.36E+02\"}, … {\"type\",\"session_exit\"}]\"{\"pid\":236,\"us…2023-04-03 18:01:26.761\"connect\"\"rstudio-connec…\"linux\"[{\"user_role\",\"publisher\"}, {\"user_guid\",\"085ba4be-01b5-478b-877c-321368924c89\"}, … {\"type\",\"audit\"}]\"{\"action\":\"add…2023-04-03 19:30:35.698\"connect\"\"rstudio-connec…\"linux\"[{\"log.file.name\",\"audit.json\"}, {\"actor_description\",\"Auth Provider\"}, … {\"entry_id\",\"3.032E+03\"}]\"{\"action\":\"add…2023-04-03 19:30:35.698\"connect\"\"rstudio-connec…\"linux\"[{\"action\",\"add_group_member\"}, {\"actor_id\",\"0E+00\"}, … {\"log.file.name\",\"audit.json\"}]\"{\"action\":\"add…2023-04-03 19:30:35.698"
+  },
+  {
     "objectID": "core.html",
     "href": "core.html",
     "title": "core",
@@ -14,31 +35,10 @@
     "text": "describe_measures\n\nsource\n\ndescribe_measures\n\n describe_measures (x:polars.dataframe.frame.DataFrame)\n\nReads metrics dataframe and returns a pandas dataframe with summary of service, name and description of all metrics\n\n\n\n\nType\nDetails\n\n\n\n\nx\nDataFrame\nmetrics dataframe\n\n\nReturns\nDataFrame\n\n\n\n\n\nm = read_chronicle(\"./data/v1/metrics/\")\ndescribe_measures(m)"
   },
   {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "py-chronicle",
-    "section": "",
-    "text": "** Work in progress **\nThe purpose of this experimental package is to expose functionality to make it easy to read, filter and manipulate chronicle parquet files."
-  },
-  {
-    "objectID": "index.html#install",
-    "href": "index.html#install",
-    "title": "py-chronicle",
-    "section": "Install",
-    "text": "Install\npip install py_chronicle"
-  },
-  {
-    "objectID": "index.html#how-to-use",
-    "href": "index.html#how-to-use",
-    "title": "py-chronicle",
-    "section": "How to use",
-    "text": "How to use\nSome examples.\n\nread_chronicle(\"./data/v1/metrics\").head()\n\n\n\nshape: (5, 13)servicehostosattributesnamedescriptionunittypetimestampvalue_floatvalue_intvalue_uintvalue_columnstrstrstrlist[struct[2]]strstrstrstrdatetime[ms]f64i64u64str\"workbench-metr…\"rstudio-workbe…\"linux\"[]\"scrape_samples…\"The number of …\"\"\"gauge\"2023-04-03 16:02:20.57469.000\"value_float\"\"workbench-metr…\"rstudio-workbe…\"linux\"[{\"version\",\"go1.14.6\"}]\"go_info\"\"Information ab…\"\"\"gauge\"2023-04-03 16:02:20.5741.000\"value_float\"\"workbench-metr…\"rstudio-workbe…\"linux\"[]\"go_memstats_mc…\"Number of byte…\"\"\"gauge\"2023-04-03 16:02:20.57416384.000\"value_float\"\"workbench-metr…\"rstudio-workbe…\"linux\"[{\"host\",\"rstudio-workbench-6b9658c77f-mn8hj\"}]\"rstudio_system…\"Graphite metri…\"\"\"gauge\"2023-04-03 16:02:20.5740.000\"value_float\"\"workbench-metr…\"rstudio-workbe…\"linux\"[]\"go_memstats_ms…\"Number of byte…\"\"\"gauge\"2023-04-03 16:02:20.57465536.000\"value_float\"\n\n\n\nread_chronicle(\"./data/v1/logs\").head()\n\n\n\nshape: (5, 6)servicehostosattributesbodytimestampstrstrstrlist[struct[2]]strdatetime[ms]\"workbench\"\"rstudio-workbe…\"linux\"[{\"data\",\"120\"}, {\"pid\",\"2.36E+02\"}, … {\"type\",\"session_suspend\"}]\"{\"pid\":236,\"us…2023-04-03 18:01:26.665\"workbench\"\"rstudio-workbe…\"linux\"[{\"data\",\"\"}, {\"pid\",\"2.36E+02\"}, … {\"type\",\"session_exit\"}]\"{\"pid\":236,\"us…2023-04-03 18:01:26.761\"connect\"\"rstudio-connec…\"linux\"[{\"user_role\",\"publisher\"}, {\"user_guid\",\"085ba4be-01b5-478b-877c-321368924c89\"}, … {\"type\",\"audit\"}]\"{\"action\":\"add…2023-04-03 19:30:35.698\"connect\"\"rstudio-connec…\"linux\"[{\"log.file.name\",\"audit.json\"}, {\"actor_description\",\"Auth Provider\"}, … {\"entry_id\",\"3.032E+03\"}]\"{\"action\":\"add…2023-04-03 19:30:35.698\"connect\"\"rstudio-connec…\"linux\"[{\"action\",\"add_group_member\"}, {\"actor_id\",\"0E+00\"}, … {\"log.file.name\",\"audit.json\"}]\"{\"action\":\"add…2023-04-03 19:30:35.698"
-  },
-  {
     "objectID": "core.html#get_metric_values",
     "href": "core.html#get_metric_values",
     "title": "core",
     "section": "get_metric_values",
-    "text": "get_metric_values\n\n\nget_metric_values\n\n get_metric_values (x:polars.dataframe.frame.DataFrame, name:str,\n                    alias:str)\n\nExtract a single metric from a metrics dataframe\n\n\n\n\nType\nDetails\n\n\n\n\nx\nDataFrame\nmetrics dataframe\n\n\nname\nstr\nname of metric to extract\n\n\nalias\nstr\nalias to use for new column\n\n\nReturns\nDataFrame\n\n\n\n\n\nm = read_chronicle(\"./data/v1/metrics/\")\nget_metric_values(m, \"cpu_percent\", \"cpu\")"
+    "text": "get_metric_values\n\nsource\n\nget_metric_values\n\n get_metric_values (x:polars.dataframe.frame.DataFrame, name:str,\n                    alias:str)\n\nExtract a single metric from a metrics dataframe\n\n\n\n\nType\nDetails\n\n\n\n\nx\nDataFrame\nmetrics dataframe\n\n\nname\nstr\nname of metric to extract\n\n\nalias\nstr\nalias to use for new column\n\n\nReturns\nDataFrame\n\n\n\n\n\nm = read_chronicle(\"./data/v1/metrics/\")\nget_metric_values(m, \"cpu_percent\", \"cpu\")\n\n\nsource\n\n\nplot_metric_values\n\n plot_metric_values (x:polars.dataframe.frame.DataFrame, name:str,\n                     alias:str)\n\nPlot a selected metric using a Plotly line plot\n\n\n\n\nType\nDetails\n\n\n\n\nx\nDataFrame\nmetrics dataframe\n\n\nname\nstr\nname of metric to extract\n\n\nalias\nstr\nalias to use for new column\n\n\nReturns\nline\n\n\n\n\n\nm = read_chronicle(\"./data/v1/metrics/\")\np = plot_metric_values(m, \"cpu_percent\", \"cpu\")\nassert str(type(p)) == \"<class 'plotly.graph_objs._figure.Figure'>\"\n# str(type(p))"
   }
 ]
