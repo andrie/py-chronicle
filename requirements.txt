@@ -1,6 +1,7 @@
 nbdev
 notebook
 pandas
+plotly
 polars
 pre-commit
 pyarrow

@@ -122,6 +122,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     "search-submit-button-title": "Submit"
   }
 }</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
 
 
 <link rel="stylesheet" href="styles.css">
@@ -222,9 +225,29 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h2 class="anchored" data-anchor-id="how-to-use">How to use</h2>
 <p>Some examples.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>read_chronicle(<span class="st">"./data/metrics.parquet"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>read_chronicle(<span class="st">"./data/v1/metrics"</span>).head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
-<pre><code>2</code></pre>
+
+<div><style>
+.dataframe > thead > tr > th,
+.dataframe > tbody > tr > td {
+  text-align: right;
+}
+</style>
+<small>shape: (5, 13)</small><table class="dataframe table table-sm table-striped"><thead><tr><th>service</th><th>host</th><th>os</th><th>attributes</th><th>name</th><th>description</th><th>unit</th><th>type</th><th>timestamp</th><th>value_float</th><th>value_int</th><th>value_uint</th><th>value_column</th></tr><tr><td>str</td><td>str</td><td>str</td><td>list[struct[2]]</td><td>str</td><td>str</td><td>str</td><td>str</td><td>datetime[ms]</td><td>f64</td><td>i64</td><td>u64</td><td>str</td></tr></thead><tbody><tr><td>"workbench-metr…</td><td>"rstudio-workbe…</td><td>"linux"</td><td>[]</td><td>"scrape_samples…</td><td>"The number of …</td><td>""</td><td>"gauge"</td><td>2023-04-03 16:02:20.574</td><td>69.0</td><td>0</td><td>0</td><td>"value_float"</td></tr><tr><td>"workbench-metr…</td><td>"rstudio-workbe…</td><td>"linux"</td><td>[{"version","go1.14.6"}]</td><td>"go_info"</td><td>"Information ab…</td><td>""</td><td>"gauge"</td><td>2023-04-03 16:02:20.574</td><td>1.0</td><td>0</td><td>0</td><td>"value_float"</td></tr><tr><td>"workbench-metr…</td><td>"rstudio-workbe…</td><td>"linux"</td><td>[]</td><td>"go_memstats_mc…</td><td>"Number of byte…</td><td>""</td><td>"gauge"</td><td>2023-04-03 16:02:20.574</td><td>16384.0</td><td>0</td><td>0</td><td>"value_float"</td></tr><tr><td>"workbench-metr…</td><td>"rstudio-workbe…</td><td>"linux"</td><td>[{"host","rstudio-workbench-6b9658c77f-mn8hj"}]</td><td>"rstudio_system…</td><td>"Graphite metri…</td><td>""</td><td>"gauge"</td><td>2023-04-03 16:02:20.574</td><td>0.0</td><td>0</td><td>0</td><td>"value_float"</td></tr><tr><td>"workbench-metr…</td><td>"rstudio-workbe…</td><td>"linux"</td><td>[]</td><td>"go_memstats_ms…</td><td>"Number of byte…</td><td>""</td><td>"gauge"</td><td>2023-04-03 16:02:20.574</td><td>65536.0</td><td>0</td><td>0</td><td>"value_float"</td></tr></tbody></table></div>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>read_chronicle(<span class="st">"./data/v1/logs"</span>).head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+
+<div><style>
+.dataframe > thead > tr > th,
+.dataframe > tbody > tr > td {
+  text-align: right;
+}
+</style>
+<small>shape: (5, 6)</small><table class="dataframe table table-sm table-striped"><thead><tr><th>service</th><th>host</th><th>os</th><th>attributes</th><th>body</th><th>timestamp</th></tr><tr><td>str</td><td>str</td><td>str</td><td>list[struct[2]]</td><td>str</td><td>datetime[ms]</td></tr></thead><tbody><tr><td>"workbench"</td><td>"rstudio-workbe…</td><td>"linux"</td><td>[{"data","120"}, {"pid","2.36E+02"}, … {"type","session_suspend"}]</td><td>"{"pid":236,"us…</td><td>2023-04-03 18:01:26.665</td></tr><tr><td>"workbench"</td><td>"rstudio-workbe…</td><td>"linux"</td><td>[{"data",""}, {"pid","2.36E+02"}, … {"type","session_exit"}]</td><td>"{"pid":236,"us…</td><td>2023-04-03 18:01:26.761</td></tr><tr><td>"connect"</td><td>"rstudio-connec…</td><td>"linux"</td><td>[{"user_role","publisher"}, {"user_guid","085ba4be-01b5-478b-877c-321368924c89"}, … {"type","audit"}]</td><td>"{"action":"add…</td><td>2023-04-03 19:30:35.698</td></tr><tr><td>"connect"</td><td>"rstudio-connec…</td><td>"linux"</td><td>[{"log.file.name","audit.json"}, {"actor_description","Auth Provider"}, … {"entry_id","3.032E+03"}]</td><td>"{"action":"add…</td><td>2023-04-03 19:30:35.698</td></tr><tr><td>"connect"</td><td>"rstudio-connec…</td><td>"linux"</td><td>[{"action","add_group_member"}, {"actor_id","0E+00"}, … {"log.file.name","audit.json"}]</td><td>"{"action":"add…</td><td>2023-04-03 19:30:35.698</td></tr></tbody></table></div>
 </div>
 </div>
 
