@@ -1,5 +1,6 @@
 fastcore
 nbdev
+nbformat>=4.2.0
 notebook
 pandas
 plotly
