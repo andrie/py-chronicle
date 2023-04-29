@@ -2,7 +2,7 @@ project:
   output-dir: _docs
 
 website:
-  title: "py-chronicle"
+  title: "chronicle"
   site-url: "https://andrie.github.io/py-chronicle"
   description: "Scaffolding to query chronicle data files"
   repo-branch: main
