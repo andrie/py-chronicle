@@ -266,7 +266,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>            <span class="ex">├──</span> 04</span>
 <span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>            <span class="ex">└──</span> ...</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <hr>
-<p><a href="https://github.com/andrie/py-chronicle/blob/main/py_chronicle/core.py#L16" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/andrie/py-chronicle/blob/main/chronicle/core.py#L16" target="_blank" style="float:right; font-size:smaller">source</a></p>
 <section id="read_chronicle" class="level3">
 <h3 class="anchored" data-anchor-id="read_chronicle">read_chronicle</h3>
 <blockquote class="blockquote">
@@ -294,7 +294,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </tr>
 </tbody>
 </table>
-<div class="cell" data-execution_count="45">
+<div class="cell" data-execution_count="6">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>z <span class="op">=</span> read_chronicle(<span class="st">"./data/v1/metrics"</span>)</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> <span class="bu">type</span>(z) <span class="op">==</span> pl.dataframe.frame.DataFrame</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -306,15 +306,36 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <section id="analyse-metrics" class="level2">
 <h2 class="anchored" data-anchor-id="analyse-metrics">Analyse metrics</h2>
 <hr>
-<p><a href="https://github.com/andrie/py-chronicle/blob/main/py_chronicle/core.py#L25" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/andrie/py-chronicle/blob/main/chronicle/core.py#L25" target="_blank" style="float:right; font-size:smaller">source</a></p>
 <section id="chroniclemetrics" class="level3">
 <h3 class="anchored" data-anchor-id="chroniclemetrics">ChronicleMetrics</h3>
 <blockquote class="blockquote">
 <pre><code> ChronicleMetrics (df:polars.dataframe.frame.DataFrame)</code></pre>
 </blockquote>
-<p>Initialize self. See help(type(self)) for accurate signature.</p>
+<p>Initialise a chronicle metrics class</p>
+<table class="table">
+<thead>
+<tr class="header">
+<th></th>
+<th><strong>Type</strong></th>
+<th><strong>Details</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>df</td>
+<td>DataFrame</td>
+<td>A <code>polars</code> DataFrame</td>
+</tr>
+<tr class="even">
+<td><strong>Returns</strong></td>
+<td><strong>DataFrame</strong></td>
+<td></td>
+</tr>
+</tbody>
+</table>
 <hr>
-<p><a href="https://github.com/andrie/py-chronicle/blob/main/py_chronicle/core.py#L33" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/andrie/py-chronicle/blob/main/chronicle/core.py#L33" target="_blank" style="float:right; font-size:smaller">source</a></p>
 </section>
 <section id="chroniclemetrics.describe" class="level3">
 <h3 class="anchored" data-anchor-id="chroniclemetrics.describe">ChronicleMetrics.describe</h3>
@@ -324,9 +345,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>Reads metrics dataframe and returns a pandas dataframe with summary of service, name and description of all metrics</p>
 <p>The metrics data has a single row for each collected metric.</p>
 <p>Use <code>describe()</code> to get a DataFrame of the unique metrics in the metrics data, containing the <code>service</code>, <code>name</code> and <code>description</code> of each metric.</p>
-<div class="cell" data-execution_count="48">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>read_chronicle(<span class="st">"./data/v1/metrics/"</span>).metrics.describe()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="48">
+<div class="cell" data-execution_count="40">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>m <span class="op">=</span> read_chronicle(<span class="st">"./data/v1/metrics/"</span>).metrics.describe()</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> <span class="bu">list</span>(m) <span class="op">==</span> [<span class="st">'service'</span>, <span class="st">'name'</span>, <span class="st">'description'</span>, <span class="st">'value_column'</span>]</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>m</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="40">
 
 <div>
 
@@ -345,43 +368,43 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <th>0</th>
       <td>connect-metrics</td>
       <td>rsconnect_system_memory_available</td>
-      <td>[Graphite metric rsconnect_system_memory_avail...</td>
-      <td>[value_float]</td>
+      <td>Graphite metric rsconnect_system_memory_available</td>
+      <td>value_float</td>
     </tr>
     <tr>
       <th>1</th>
       <td>connect-metrics</td>
       <td>rsconnect_system_memory_total</td>
-      <td>[Graphite metric rsconnect_system_memory_total]</td>
-      <td>[value_float]</td>
+      <td>Graphite metric rsconnect_system_memory_total</td>
+      <td>value_float</td>
     </tr>
     <tr>
       <th>2</th>
       <td>connect-metrics</td>
       <td>rsconnect_system_memory_used</td>
-      <td>[Graphite metric rsconnect_system_memory_used]</td>
-      <td>[value_float]</td>
+      <td>Graphite metric rsconnect_system_memory_used</td>
+      <td>value_float</td>
     </tr>
     <tr>
       <th>3</th>
       <td>workbench-metrics</td>
       <td>rstudio_system_memory_available</td>
-      <td>[Graphite metric rstudio_system_memory_available]</td>
-      <td>[value_float]</td>
+      <td>Graphite metric rstudio_system_memory_available</td>
+      <td>value_float</td>
     </tr>
     <tr>
       <th>4</th>
       <td>workbench-metrics</td>
       <td>rstudio_system_memory_total</td>
-      <td>[Graphite metric rstudio_system_memory_total]</td>
-      <td>[value_float]</td>
+      <td>Graphite metric rstudio_system_memory_total</td>
+      <td>value_float</td>
     </tr>
     <tr>
       <th>5</th>
       <td>workbench-metrics</td>
       <td>rstudio_system_memory_used</td>
-      <td>[Graphite metric rstudio_system_memory_used]</td>
-      <td>[value_float]</td>
+      <td>Graphite metric rstudio_system_memory_used</td>
+      <td>value_float</td>
     </tr>
   </tbody>
 </table>
@@ -389,7 +412,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 </div>
 <hr>
-<p><a href="https://github.com/andrie/py-chronicle/blob/main/py_chronicle/core.py#L49" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/andrie/py-chronicle/blob/main/chronicle/core.py#L49" target="_blank" style="float:right; font-size:smaller">source</a></p>
 </section>
 <section id="chroniclemetrics.filter" class="level3">
 <h3 class="anchored" data-anchor-id="chroniclemetrics.filter">ChronicleMetrics.filter</h3>
@@ -428,7 +451,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </tbody>
 </table>
 <p>The <code>name</code> argument is used to filter the DataFrame on the <code>name</code> column.</p>
-<div class="cell" data-execution_count="50">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>m <span class="op">=</span> read_chronicle(<span class="st">"./data/v1/metrics/"</span>).metrics.<span class="bu">filter</span>(<span class="st">"rsconnect_system_memory_used"</span>)</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> <span class="bu">type</span>(m) <span class="op">==</span> pd.DataFrame</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> <span class="bu">list</span>(m) <span class="op">==</span> [<span class="st">'host'</span>, <span class="st">'timestamp'</span>, <span class="st">'rsconnect_system_memory_used'</span>]</span>
@@ -438,7 +461,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> <span class="bu">list</span>(m) <span class="op">==</span> [<span class="st">'host'</span>, <span class="st">'timestamp'</span>, <span class="st">'memory'</span>]</span>
 <span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>m</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="50">
+<div class="cell-output cell-output-display">
 
 <div>
 
@@ -525,7 +548,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 </div>
 <hr>
-<p><a href="https://github.com/andrie/py-chronicle/blob/main/py_chronicle/core.py#L73" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/andrie/py-chronicle/blob/main/chronicle/core.py#L73" target="_blank" style="float:right; font-size:smaller">source</a></p>
 </section>
 <section id="chroniclemetrics.plot" class="level3">
 <h3 class="anchored" data-anchor-id="chroniclemetrics.plot">ChronicleMetrics.plot</h3>
@@ -563,7 +586,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </tr>
 </tbody>
 </table>
-<div class="cell" data-execution_count="52">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>m <span class="op">=</span> read_chronicle(<span class="st">"./data/v1/metrics/"</span>)</span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>p <span class="op">=</span> m.metrics.plot(<span class="st">"rsconnect_system_memory_used"</span>, <span class="st">"memory"</span>)</span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> <span class="bu">str</span>(<span class="bu">type</span>(p)) <span class="op">==</span> <span class="st">"&lt;class 'plotly.graph_objs._figure.Figure'&gt;"</span></span>
@@ -579,7 +602,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <section id="analyse-logs" class="level2">
 <h2 class="anchored" data-anchor-id="analyse-logs">Analyse logs</h2>
 <hr>
-<p><a href="https://github.com/andrie/py-chronicle/blob/main/py_chronicle/core.py#L86" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/andrie/py-chronicle/blob/main/chronicle/core.py#L86" target="_blank" style="float:right; font-size:smaller">source</a></p>
 <section id="chroniclelogs" class="level3">
 <h3 class="anchored" data-anchor-id="chroniclelogs">ChronicleLogs</h3>
 <blockquote class="blockquote">
@@ -600,13 +623,18 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <td>DataFrame</td>
 <td>A polars data frame</td>
 </tr>
+<tr class="even">
+<td><strong>Returns</strong></td>
+<td><strong>DataFrame</strong></td>
+<td></td>
+</tr>
 </tbody>
 </table>
 <section id="filter-logs-on-type" class="level4">
 <h4 class="anchored" data-anchor-id="filter-logs-on-type">Filter logs on type</h4>
 <p>You can</p>
 <hr>
-<p><a href="https://github.com/andrie/py-chronicle/blob/main/py_chronicle/core.py#L95" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/andrie/py-chronicle/blob/main/chronicle/core.py#L95" target="_blank" style="float:right; font-size:smaller">source</a></p>
 </section>
 </section>
 <section id="chroniclelogs.filter_type" class="level3">
@@ -636,15 +664,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </tr>
 </tbody>
 </table>
-<div class="cell" data-execution_count="55">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>logs <span class="op">=</span> read_chronicle(<span class="st">"./data/v1/logs"</span>).logs.filter_type(<span class="st">"username"</span>)</span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> <span class="bu">type</span>(logs) <span class="op">==</span> pl.DataFrame</span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="co"># assert logs</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell" data-execution_count="56">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>read_chronicle(<span class="st">"./data/v1/logs"</span>).logs.filter_type(<span class="st">"username"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="56">
+<div class="cell-output cell-output-display">
 
 <div><style>
 .dataframe > thead > tr > th,

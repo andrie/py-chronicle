@@ -270,9 +270,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <section id="working-with-metrics" class="level2">
 <h2 class="anchored" data-anchor-id="working-with-metrics">Working with metrics</h2>
 <p>Some examples.</p>
-<div class="cell" data-execution_count="2">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>read_chronicle(<span class="st">"./data/v1/metrics"</span>).head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="2">
+<div class="cell-output cell-output-display">
 
 <div><style>
 .dataframe > thead > tr > th,
@@ -283,9 +283,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <small>shape: (5, 13)</small><table class="dataframe table table-sm table-striped"><thead><tr><th>service</th><th>host</th><th>os</th><th>attributes</th><th>name</th><th>description</th><th>unit</th><th>type</th><th>timestamp</th><th>value_float</th><th>value_int</th><th>value_uint</th><th>value_column</th></tr><tr><td>str</td><td>str</td><td>str</td><td>list[struct[2]]</td><td>str</td><td>str</td><td>str</td><td>str</td><td>datetime[ms]</td><td>f64</td><td>i64</td><td>u64</td><td>str</td></tr></thead><tbody><tr><td>"workbench-metr…</td><td>"rstudio-workbe…</td><td>"linux"</td><td>[{"host","rstudio-workbench-6b9658c77f-mn8hj"}]</td><td>"rstudio_system…</td><td>"Graphite metri…</td><td>""</td><td>"gauge"</td><td>2023-04-03 16:02:20.574</td><td>3.0074e9</td><td>0</td><td>0</td><td>"value_float"</td></tr><tr><td>"workbench-metr…</td><td>"rstudio-workbe…</td><td>"linux"</td><td>[{"host","rstudio-workbench-6b9658c77f-mn8hj"}]</td><td>"rstudio_system…</td><td>"Graphite metri…</td><td>""</td><td>"gauge"</td><td>2023-04-03 16:02:20.574</td><td>3.2212e9</td><td>0</td><td>0</td><td>"value_float"</td></tr><tr><td>"workbench-metr…</td><td>"rstudio-workbe…</td><td>"linux"</td><td>[{"host","rstudio-workbench-6b9658c77f-mn8hj"}]</td><td>"rstudio_system…</td><td>"Graphite metri…</td><td>""</td><td>"gauge"</td><td>2023-04-03 16:02:20.574</td><td>2.13864448e8</td><td>0</td><td>0</td><td>"value_float"</td></tr><tr><td>"connect-metric…</td><td>"rstudio-connec…</td><td>"linux"</td><td>[{"host","rstudio-connect-68785f94cc-qzvrm"}]</td><td>"rsconnect_syst…</td><td>"Graphite metri…</td><td>""</td><td>"gauge"</td><td>2023-04-03 16:24:29.980</td><td>5.7377e9</td><td>0</td><td>0</td><td>"value_float"</td></tr><tr><td>"connect-metric…</td><td>"rstudio-connec…</td><td>"linux"</td><td>[{"host","rstudio-connect-68785f94cc-qzvrm"}]</td><td>"rsconnect_syst…</td><td>"Graphite metri…</td><td>""</td><td>"gauge"</td><td>2023-04-03 16:24:29.980</td><td>7.04741376e8</td><td>0</td><td>0</td><td>"value_float"</td></tr></tbody></table></div>
 </div>
 </div>
-<div class="cell" data-execution_count="3">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>read_chronicle(<span class="st">"./data/v1/metrics/"</span>).metrics.describe()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="3">
+<div class="cell-output cell-output-display">
 
 <div>
 
@@ -347,9 +347,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 </div>
 </div>
-<div class="cell" data-execution_count="4">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>read_chronicle(<span class="st">"./data/v1/metrics/"</span>).metrics.<span class="bu">filter</span>(<span class="st">"rsconnect_system_memory_used"</span>, <span class="st">"memory"</span>).head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="4">
+<div class="cell-output cell-output-display">
 
 <div>
 
@@ -398,7 +398,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 </div>
 </div>
-<div class="cell" data-execution_count="5">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>read_chronicle(<span class="st">"./data/v1/metrics/"</span>).metrics.plot(<span class="st">"rsconnect_system_memory_used"</span>, <span class="st">"memory"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <pre><code>Unable to display output for mime type(s): application/vnd.plotly.v1+json</code></pre>
@@ -408,9 +408,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <section id="working-with-logs" class="level2">
 <h2 class="anchored" data-anchor-id="working-with-logs">Working with logs</h2>
 <p>Some examples.</p>
-<div class="cell" data-execution_count="6">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>read_chronicle(<span class="st">"./data/v1/logs"</span>).head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="6">
+<div class="cell-output cell-output-display">
 
 <div><style>
 .dataframe > thead > tr > th,
@@ -421,9 +421,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <small>shape: (5, 6)</small><table class="dataframe table table-sm table-striped"><thead><tr><th>service</th><th>host</th><th>os</th><th>attributes</th><th>body</th><th>timestamp</th></tr><tr><td>str</td><td>str</td><td>str</td><td>list[struct[2]]</td><td>str</td><td>datetime[ms]</td></tr></thead><tbody><tr><td>"workbench"</td><td>"rstudio-workbe…</td><td>"linux"</td><td>[{"data","120"}, {"pid","2.36E+02"}, … {"type","session_suspend"}]</td><td>"{"pid":236,"us…</td><td>2023-04-03 18:01:26.665</td></tr><tr><td>"workbench"</td><td>"rstudio-workbe…</td><td>"linux"</td><td>[{"data",""}, {"pid","2.36E+02"}, … {"type","session_exit"}]</td><td>"{"pid":236,"us…</td><td>2023-04-03 18:01:26.761</td></tr><tr><td>"connect"</td><td>"rstudio-connec…</td><td>"linux"</td><td>[{"user_role","publisher"}, {"user_guid","085ba4be-01b5-478b-877c-321368924c89"}, … {"type","audit"}]</td><td>"{"action":"add…</td><td>2023-04-03 19:30:35.698</td></tr><tr><td>"connect"</td><td>"rstudio-connec…</td><td>"linux"</td><td>[{"log.file.name","audit.json"}, {"actor_description","Auth Provider"}, … {"entry_id","3.032E+03"}]</td><td>"{"action":"add…</td><td>2023-04-03 19:30:35.698</td></tr><tr><td>"connect"</td><td>"rstudio-connec…</td><td>"linux"</td><td>[{"action","add_group_member"}, {"actor_id","0E+00"}, … {"log.file.name","audit.json"}]</td><td>"{"action":"add…</td><td>2023-04-03 19:30:35.698</td></tr></tbody></table></div>
 </div>
 </div>
-<div class="cell" data-execution_count="7">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>read_chronicle(<span class="st">"./data/v1/logs"</span>).logs.filter_type(<span class="st">"username"</span>).head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="7">
+<div class="cell-output cell-output-display">
 
 <div><style>
 .dataframe > thead > tr > th,

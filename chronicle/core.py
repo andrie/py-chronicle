@@ -23,7 +23,10 @@ def read_chronicle(
 # %% ../nbs/core.ipynb 8
 @pl.api.register_dataframe_namespace("metrics")
 class ChronicleMetrics:
-    def __init__(self, df: pl.DataFrame):
+    def __init__(self, 
+                 df: pl.DataFrame # A `polars` DataFrame
+                 ) -> pl.DataFrame:
+        "Initialise a chronicle metrics class"
         self._df = df
 
 
@@ -39,10 +42,13 @@ def describe(self: ChronicleMetrics) -> pl.DataFrame:
             pl.col("description").unique(),
             pl.col("value_column").unique(),
         )
+        .with_columns(
+            pl.col("description").arr.join(", "),
+            pl.col("value_column").arr.join("")
+        )
         .sort("service", "name")
         .to_pandas()
     )
-
 
 # %% ../nbs/core.ipynb 12
 @patch
@@ -86,7 +92,7 @@ def plot(
 class ChronicleLogs:
     def __init__(self, 
                  df: pl.DataFrame # A polars data frame
-                 ):
+                 ) -> pl.DataFrame:
         "Initialise a chronicle logs DataFrame"
         self._df = df
 
