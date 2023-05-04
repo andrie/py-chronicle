@@ -82,19 +82,21 @@ by year, month and day.
 Some examples.
 
 ``` python
-read_chronicle("./data/v1/metrics").head()
+read_chronicle_metrics("./data").head()
+```
+
+    NameError: name 'read_chronicle_metrics' is not defined
+
+``` python
+read_chronicle_metrics("./data").metrics.describe()
 ```
 
 ``` python
-read_chronicle("./data/v1/metrics/").metrics.describe()
+read_chronicle_metrics("./data").metrics.filter("rsconnect_system_memory_used", "memory").head()
 ```
 
 ``` python
-read_chronicle("./data/v1/metrics/").metrics.filter("rsconnect_system_memory_used", "memory").head()
-```
-
-``` python
-read_chronicle("./data/v1/metrics/").metrics.plot("rsconnect_system_memory_used", "memory")
+read_chronicle_metrics("./data").metrics.plot("rsconnect_system_memory_used", "memory")
 ```
 
 ## Working with logs
@@ -102,11 +104,11 @@ read_chronicle("./data/v1/metrics/").metrics.plot("rsconnect_system_memory_used"
 Some examples.
 
 ``` python
-read_chronicle("./data/v1/logs").head()
+read_chronicle_logs("./data").head()
 ```
 
 ``` python
-read_chronicle("./data/v1/logs").logs.filter_type("username").head()
+read_chronicle_logs("./data").logs.filter_type("username").head()
 ```
 
 ### 

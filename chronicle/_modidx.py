@@ -13,4 +13,6 @@ d = { 'settings': { 'branch': 'main',
                                 'chronicle.core.ChronicleMetrics.describe': ('core.html#chroniclemetrics.describe', 'chronicle/core.py'),
                                 'chronicle.core.ChronicleMetrics.filter': ('core.html#chroniclemetrics.filter', 'chronicle/core.py'),
                                 'chronicle.core.ChronicleMetrics.plot': ('core.html#chroniclemetrics.plot', 'chronicle/core.py'),
-                                'chronicle.core.read_chronicle': ('core.html#read_chronicle', 'chronicle/core.py')}}}
+                                'chronicle.core.read_chronicle': ('core.html#read_chronicle', 'chronicle/core.py'),
+                                'chronicle.core.read_chronicle_logs': ('core.html#read_chronicle_logs', 'chronicle/core.py'),
+                                'chronicle.core.read_chronicle_metrics': ('core.html#read_chronicle_metrics', 'chronicle/core.py')}}}
