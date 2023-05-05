@@ -1,5 +1,4 @@
 website:
   sidebar:
     contents:
-      - index.ipynb
-      - core.ipynb
+      - io.ipynb

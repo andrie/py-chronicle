@@ -2,10 +2,14 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://andrie.github.io/py-chronicle/core.html</loc>
-    <lastmod>2023-04-30T20:08:41.866Z</lastmod>
+    <lastmod>2023-05-05T10:06:55.656Z</lastmod>
   </url>
   <url>
     <loc>https://andrie.github.io/py-chronicle/index.html</loc>
-    <lastmod>2023-04-30T20:08:43.724Z</lastmod>
+    <lastmod>2023-05-05T10:06:56.889Z</lastmod>
+  </url>
+  <url>
+    <loc>https://andrie.github.io/py-chronicle/io.html</loc>
+    <lastmod>2023-05-05T10:06:57.680Z</lastmod>
   </url>
 </urlset>

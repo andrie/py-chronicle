@@ -15,4 +15,6 @@ d = { 'settings': { 'branch': 'main',
                                 'chronicle.core.ChronicleMetrics.plot': ('core.html#chroniclemetrics.plot', 'chronicle/core.py'),
                                 'chronicle.core.read_chronicle': ('core.html#read_chronicle', 'chronicle/core.py'),
                                 'chronicle.core.read_chronicle_logs': ('core.html#read_chronicle_logs', 'chronicle/core.py'),
-                                'chronicle.core.read_chronicle_metrics': ('core.html#read_chronicle_metrics', 'chronicle/core.py')}}}
+                                'chronicle.core.read_chronicle_metrics': ('core.html#read_chronicle_metrics', 'chronicle/core.py')},
+            'chronicle.io': { 'chronicle.io.get_s3_bucket_dates': ('io.html#get_s3_bucket_dates', 'chronicle/io.py'),
+                              'chronicle.io.write_parquet': ('io.html#write_parquet', 'chronicle/io.py')}}}
