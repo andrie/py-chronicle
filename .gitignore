@@ -1,7 +1,7 @@
 ^venv/
-^temp/
-^_docs/*
-^_proc/*
+temp/
+_docs/
+_proc/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
