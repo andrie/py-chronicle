@@ -16,10 +16,7 @@ chronicle
 
 The package is not yet available on PyPi.
 
-``` sh
-#| include: False
-pip install py_chronicle
-```
+~~pip install py_chronicle~~
 
 You can install from github:
 
@@ -82,7 +79,7 @@ by year, month and day.
 Some examples.
 
 ``` python
-read_chronicle_metrics("./data").head()
+scan_chronicle_metrics("./data", "2023/04/03").head().collect()
 ```
 
 <div><style>
@@ -91,10 +88,10 @@ read_chronicle_metrics("./data").head()
   text-align: right;
 }
 </style>
-<small>shape: (5, 13)</small><table border="1" class="dataframe"><thead><tr><th>service</th><th>host</th><th>os</th><th>attributes</th><th>name</th><th>description</th><th>unit</th><th>type</th><th>timestamp</th><th>value_float</th><th>value_int</th><th>value_uint</th><th>value_column</th></tr><tr><td>str</td><td>str</td><td>str</td><td>list[struct[2]]</td><td>str</td><td>str</td><td>str</td><td>str</td><td>datetime[ms]</td><td>f64</td><td>i64</td><td>u64</td><td>str</td></tr></thead><tbody><tr><td>&quot;workbench-metr…</td><td>&quot;rstudio-workbe…</td><td>&quot;linux&quot;</td><td>[{&quot;host&quot;,&quot;rstudio-workbench-6b9658c77f-mn8hj&quot;}]</td><td>&quot;rstudio_system…</td><td>&quot;Graphite metri…</td><td>&quot;&quot;</td><td>&quot;gauge&quot;</td><td>2023-04-03 16:02:20.574</td><td>3.0074e9</td><td>0</td><td>0</td><td>&quot;value_float&quot;</td></tr><tr><td>&quot;workbench-metr…</td><td>&quot;rstudio-workbe…</td><td>&quot;linux&quot;</td><td>[{&quot;host&quot;,&quot;rstudio-workbench-6b9658c77f-mn8hj&quot;}]</td><td>&quot;rstudio_system…</td><td>&quot;Graphite metri…</td><td>&quot;&quot;</td><td>&quot;gauge&quot;</td><td>2023-04-03 16:02:20.574</td><td>3.2212e9</td><td>0</td><td>0</td><td>&quot;value_float&quot;</td></tr><tr><td>&quot;workbench-metr…</td><td>&quot;rstudio-workbe…</td><td>&quot;linux&quot;</td><td>[{&quot;host&quot;,&quot;rstudio-workbench-6b9658c77f-mn8hj&quot;}]</td><td>&quot;rstudio_system…</td><td>&quot;Graphite metri…</td><td>&quot;&quot;</td><td>&quot;gauge&quot;</td><td>2023-04-03 16:02:20.574</td><td>2.13864448e8</td><td>0</td><td>0</td><td>&quot;value_float&quot;</td></tr><tr><td>&quot;connect-metric…</td><td>&quot;rstudio-connec…</td><td>&quot;linux&quot;</td><td>[{&quot;host&quot;,&quot;rstudio-connect-68785f94cc-qzvrm&quot;}]</td><td>&quot;rsconnect_syst…</td><td>&quot;Graphite metri…</td><td>&quot;&quot;</td><td>&quot;gauge&quot;</td><td>2023-04-03 16:24:29.980</td><td>5.7377e9</td><td>0</td><td>0</td><td>&quot;value_float&quot;</td></tr><tr><td>&quot;connect-metric…</td><td>&quot;rstudio-connec…</td><td>&quot;linux&quot;</td><td>[{&quot;host&quot;,&quot;rstudio-connect-68785f94cc-qzvrm&quot;}]</td><td>&quot;rsconnect_syst…</td><td>&quot;Graphite metri…</td><td>&quot;&quot;</td><td>&quot;gauge&quot;</td><td>2023-04-03 16:24:29.980</td><td>7.04741376e8</td><td>0</td><td>0</td><td>&quot;value_float&quot;</td></tr></tbody></table></div>
+<small>shape: (5, 13)</small><table border="1" class="dataframe"><thead><tr><th>service</th><th>host</th><th>os</th><th>attributes</th><th>name</th><th>description</th><th>unit</th><th>type</th><th>timestamp</th><th>value_float</th><th>value_int</th><th>value_uint</th><th>value_column</th></tr><tr><td>str</td><td>str</td><td>str</td><td>list[struct[2]]</td><td>str</td><td>str</td><td>str</td><td>str</td><td>datetime[ms]</td><td>f64</td><td>i64</td><td>u64</td><td>str</td></tr></thead><tbody><tr><td>&quot;workbench-metr…</td><td>&quot;rstudio-workbe…</td><td>&quot;linux&quot;</td><td>[]</td><td>&quot;scrape_samples…</td><td>&quot;The number of …</td><td>&quot;&quot;</td><td>&quot;gauge&quot;</td><td>2023-04-03 16:02:20.574</td><td>69.0</td><td>0</td><td>0</td><td>&quot;value_float&quot;</td></tr><tr><td>&quot;workbench-metr…</td><td>&quot;rstudio-workbe…</td><td>&quot;linux&quot;</td><td>[{&quot;version&quot;,&quot;go1.14.6&quot;}]</td><td>&quot;go_info&quot;</td><td>&quot;Information ab…</td><td>&quot;&quot;</td><td>&quot;gauge&quot;</td><td>2023-04-03 16:02:20.574</td><td>1.0</td><td>0</td><td>0</td><td>&quot;value_float&quot;</td></tr><tr><td>&quot;workbench-metr…</td><td>&quot;rstudio-workbe…</td><td>&quot;linux&quot;</td><td>[]</td><td>&quot;go_memstats_mc…</td><td>&quot;Number of byte…</td><td>&quot;&quot;</td><td>&quot;gauge&quot;</td><td>2023-04-03 16:02:20.574</td><td>16384.0</td><td>0</td><td>0</td><td>&quot;value_float&quot;</td></tr><tr><td>&quot;workbench-metr…</td><td>&quot;rstudio-workbe…</td><td>&quot;linux&quot;</td><td>[{&quot;host&quot;,&quot;rstudio-workbench-6b9658c77f-mn8hj&quot;}]</td><td>&quot;rstudio_system…</td><td>&quot;Graphite metri…</td><td>&quot;&quot;</td><td>&quot;gauge&quot;</td><td>2023-04-03 16:02:20.574</td><td>0.0</td><td>0</td><td>0</td><td>&quot;value_float&quot;</td></tr><tr><td>&quot;workbench-metr…</td><td>&quot;rstudio-workbe…</td><td>&quot;linux&quot;</td><td>[]</td><td>&quot;go_memstats_ms…</td><td>&quot;Number of byte…</td><td>&quot;&quot;</td><td>&quot;gauge&quot;</td><td>2023-04-03 16:02:20.574</td><td>65536.0</td><td>0</td><td>0</td><td>&quot;value_float&quot;</td></tr></tbody></table></div>
 
 ``` python
-read_chronicle_metrics("./data").metrics.describe()
+scan_chronicle_metrics("./data", "2023/04/03").metrics.describe()
 ```
 
 <div>
@@ -124,52 +121,88 @@ read_chronicle_metrics("./data").metrics.describe()
   <tbody>
     <tr>
       <th>0</th>
-      <td>connect-metrics</td>
-      <td>rsconnect_system_memory_available</td>
-      <td>Graphite metric rsconnect_system_memory_available</td>
+      <td></td>
+      <td>system.cpu.time</td>
+      <td>Total CPU seconds broken down by different sta...</td>
       <td>value_float</td>
     </tr>
     <tr>
       <th>1</th>
-      <td>connect-metrics</td>
-      <td>rsconnect_system_memory_total</td>
-      <td>Graphite metric rsconnect_system_memory_total</td>
-      <td>value_float</td>
+      <td></td>
+      <td>system.memory.usage</td>
+      <td>Bytes of memory in use.</td>
+      <td>value_int</td>
     </tr>
     <tr>
       <th>2</th>
       <td>connect-metrics</td>
-      <td>rsconnect_system_memory_used</td>
-      <td>Graphite metric rsconnect_system_memory_used</td>
+      <td>go_goroutines</td>
+      <td>Number of goroutines that currently exist.</td>
       <td>value_float</td>
     </tr>
     <tr>
       <th>3</th>
-      <td>workbench-metrics</td>
-      <td>rstudio_system_memory_available</td>
-      <td>Graphite metric rstudio_system_memory_available</td>
+      <td>connect-metrics</td>
+      <td>go_info</td>
+      <td>Information about the Go environment.</td>
       <td>value_float</td>
     </tr>
     <tr>
       <th>4</th>
-      <td>workbench-metrics</td>
-      <td>rstudio_system_memory_total</td>
-      <td>Graphite metric rstudio_system_memory_total</td>
+      <td>connect-metrics</td>
+      <td>go_memstats_alloc_bytes</td>
+      <td>Number of bytes allocated and still in use.</td>
       <td>value_float</td>
     </tr>
     <tr>
-      <th>5</th>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>176</th>
       <td>workbench-metrics</td>
-      <td>rstudio_system_memory_used</td>
-      <td>Graphite metric rstudio_system_memory_used</td>
+      <td>scrape_series_added</td>
+      <td>The approximate number of new series in this s...</td>
+      <td>value_float</td>
+    </tr>
+    <tr>
+      <th>177</th>
+      <td>workbench-metrics</td>
+      <td>statsd_metric_mapper_cache_gets_total</td>
+      <td>The count of total metric cache gets.</td>
+      <td>value_float</td>
+    </tr>
+    <tr>
+      <th>178</th>
+      <td>workbench-metrics</td>
+      <td>statsd_metric_mapper_cache_hits_total</td>
+      <td>The count of total metric cache hits.</td>
+      <td>value_float</td>
+    </tr>
+    <tr>
+      <th>179</th>
+      <td>workbench-metrics</td>
+      <td>statsd_metric_mapper_cache_length</td>
+      <td>The count of unique metrics currently cached.</td>
+      <td>value_float</td>
+    </tr>
+    <tr>
+      <th>180</th>
+      <td>workbench-metrics</td>
+      <td>up</td>
+      <td>The scraping was successful</td>
       <td>value_float</td>
     </tr>
   </tbody>
 </table>
+<p>181 rows × 4 columns</p>
 </div>
 
 ``` python
-read_chronicle_metrics("./data").metrics.filter("rsconnect_system_memory_used", "memory").head()
+scan_chronicle_metrics("./data", "2023/04/03").metrics.filter("rsconnect_system_memory_used", "memory").head()
 ```
 
 <div>
@@ -231,7 +264,7 @@ read_chronicle_metrics("./data").metrics.filter("rsconnect_system_memory_used", 
 </div>
 
 ``` python
-read_chronicle_metrics("./data").metrics.plot("rsconnect_system_memory_used", "memory")
+scan_chronicle_metrics("./data", "2023/04/03").metrics.plot("rsconnect_system_memory_used", "memory")
 ```
 
     Unable to display output for mime type(s): application/vnd.plotly.v1+json
@@ -241,7 +274,7 @@ read_chronicle_metrics("./data").metrics.plot("rsconnect_system_memory_used", "m
 Some examples.
 
 ``` python
-read_chronicle_logs("./data").head()
+scan_chronicle_logs("./data",  "2023/04/03").head().collect()
 ```
 
 <div><style>
@@ -253,7 +286,7 @@ read_chronicle_logs("./data").head()
 <small>shape: (5, 6)</small><table border="1" class="dataframe"><thead><tr><th>service</th><th>host</th><th>os</th><th>attributes</th><th>body</th><th>timestamp</th></tr><tr><td>str</td><td>str</td><td>str</td><td>list[struct[2]]</td><td>str</td><td>datetime[ms]</td></tr></thead><tbody><tr><td>&quot;workbench&quot;</td><td>&quot;rstudio-workbe…</td><td>&quot;linux&quot;</td><td>[{&quot;data&quot;,&quot;120&quot;}, {&quot;pid&quot;,&quot;2.36E+02&quot;}, … {&quot;type&quot;,&quot;session_suspend&quot;}]</td><td>&quot;{&quot;pid&quot;:236,&quot;us…</td><td>2023-04-03 18:01:26.665</td></tr><tr><td>&quot;workbench&quot;</td><td>&quot;rstudio-workbe…</td><td>&quot;linux&quot;</td><td>[{&quot;data&quot;,&quot;&quot;}, {&quot;pid&quot;,&quot;2.36E+02&quot;}, … {&quot;type&quot;,&quot;session_exit&quot;}]</td><td>&quot;{&quot;pid&quot;:236,&quot;us…</td><td>2023-04-03 18:01:26.761</td></tr><tr><td>&quot;connect&quot;</td><td>&quot;rstudio-connec…</td><td>&quot;linux&quot;</td><td>[{&quot;user_role&quot;,&quot;publisher&quot;}, {&quot;user_guid&quot;,&quot;085ba4be-01b5-478b-877c-321368924c89&quot;}, … {&quot;type&quot;,&quot;audit&quot;}]</td><td>&quot;{&quot;action&quot;:&quot;add…</td><td>2023-04-03 19:30:35.698</td></tr><tr><td>&quot;connect&quot;</td><td>&quot;rstudio-connec…</td><td>&quot;linux&quot;</td><td>[{&quot;log.file.name&quot;,&quot;audit.json&quot;}, {&quot;actor_description&quot;,&quot;Auth Provider&quot;}, … {&quot;entry_id&quot;,&quot;3.032E+03&quot;}]</td><td>&quot;{&quot;action&quot;:&quot;add…</td><td>2023-04-03 19:30:35.698</td></tr><tr><td>&quot;connect&quot;</td><td>&quot;rstudio-connec…</td><td>&quot;linux&quot;</td><td>[{&quot;action&quot;,&quot;add_group_member&quot;}, {&quot;actor_id&quot;,&quot;0E+00&quot;}, … {&quot;log.file.name&quot;,&quot;audit.json&quot;}]</td><td>&quot;{&quot;action&quot;:&quot;add…</td><td>2023-04-03 19:30:35.698</td></tr></tbody></table></div>
 
 ``` python
-read_chronicle_logs("./data").logs.filter_type("username").head()
+scan_chronicle_logs("./data",  "2023/04/03").logs.filter_type("username")
 ```
 
 <div><style>
@@ -262,6 +295,6 @@ read_chronicle_logs("./data").logs.filter_type("username").head()
   text-align: right;
 }
 </style>
-<small>shape: (5, 6)</small><table border="1" class="dataframe"><thead><tr><th>service</th><th>host</th><th>timestamp</th><th>.username</th><th>.type</th><th>body</th></tr><tr><td>str</td><td>str</td><td>datetime[ms]</td><td>str</td><td>str</td><td>str</td></tr></thead><tbody><tr><td>&quot;workbench&quot;</td><td>&quot;rstudio-workbe…</td><td>2023-04-03 18:01:26.761</td><td>&quot;james&quot;</td><td>&quot;session_exit&quot;</td><td>&quot;{&quot;pid&quot;:236,&quot;us…</td></tr><tr><td>&quot;workbench&quot;</td><td>&quot;rstudio-workbe…</td><td>2023-04-07 03:46:57.960</td><td>&quot;james&quot;</td><td>&quot;auth_login&quot;</td><td>&quot;{&quot;pid&quot;:1059,&quot;u…</td></tr><tr><td>&quot;workbench&quot;</td><td>&quot;rstudio-workbe…</td><td>2023-04-07 03:51:15.161</td><td>&quot;james&quot;</td><td>&quot;session_start&quot;</td><td>&quot;{&quot;pid&quot;:236,&quot;us…</td></tr><tr><td>&quot;workbench&quot;</td><td>&quot;rstudio-workbe…</td><td>2023-04-07 04:19:18.561</td><td>&quot;james&quot;</td><td>&quot;session_exit&quot;</td><td>&quot;{&quot;pid&quot;:236,&quot;us…</td></tr><tr><td>&quot;workbench&quot;</td><td>&quot;rstudio-workbe…</td><td>2023-04-07 04:19:19.764</td><td>&quot;james&quot;</td><td>&quot;session_start&quot;</td><td>&quot;{&quot;pid&quot;:883,&quot;us…</td></tr></tbody></table></div>
+<small>shape: (2, 6)</small><table border="1" class="dataframe"><thead><tr><th>service</th><th>host</th><th>timestamp</th><th>.username</th><th>.type</th><th>body</th></tr><tr><td>str</td><td>str</td><td>datetime[ms]</td><td>str</td><td>str</td><td>str</td></tr></thead><tbody><tr><td>&quot;workbench&quot;</td><td>&quot;rstudio-workbe…</td><td>2023-04-03 18:01:26.761</td><td>&quot;james&quot;</td><td>&quot;session_exit&quot;</td><td>&quot;{&quot;pid&quot;:236,&quot;us…</td></tr><tr><td>&quot;workbench&quot;</td><td>&quot;rstudio-workbe…</td><td>2023-04-03 18:01:26.665</td><td>&quot;james&quot;</td><td>&quot;session_suspen…</td><td>&quot;{&quot;pid&quot;:236,&quot;us…</td></tr></tbody></table></div>
 
 ### 

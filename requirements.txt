@@ -1,4 +1,5 @@
 fastcore
+ipydatagrid
 nbdev
 nbformat>=4.2.0
 notebook
@@ -9,3 +10,5 @@ pre-commit
 pyarrow
 quarto
 s3fs
+shiny
+

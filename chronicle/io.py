@@ -12,7 +12,7 @@ from pyarrow import fs
 import tempfile
 import os
 import re
-from .core import read_chronicle_metrics
+from .core import scan_chronicle_metrics
 
 # %% ../nbs/io.ipynb 4
 def write_parquet(
@@ -30,6 +30,7 @@ def get_s3_bucket_dates(
         version="v1" # "v1" or "v2"
     ) -> list:
     "Get a list of dates for which there are chronicle logs or metrics in an S3 bucket"
+    bucket = re.sub("^s3://", "", bucket)
     s3 = fs.S3FileSystem()
     p = s3.get_file_info(
         fs.FileSelector(
