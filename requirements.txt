@@ -11,4 +11,4 @@ pyarrow
 quarto
 s3fs
 shiny
-
+faicons
