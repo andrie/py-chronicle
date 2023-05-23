@@ -168,3 +168,4 @@ cython_debug/
 # Temporary stuff
 ^temp
 metrics_old.parquet
+*.parquet
