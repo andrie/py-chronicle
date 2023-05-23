@@ -49,32 +49,37 @@ def read_chronicle_logs(
 def scan_chronicle(
         path: str, # Path to dataset,
         type: str = "", # must be `metrics` or `logs`
-        date:str = "", # date in format `YYYY/MM/DD` 
+        date:str = None, # date in format `YYYY/MM/DD` 
         filename: str = None, # name of parquet file. If empty, will be inferred.
         version: str = "v1" # currently must be `v1`
     ) -> pl.LazyFrame:
     "Read a chronicle parquet file into a polars LazyFrame."
-    date = re.sub("-", "/", date)
-    dateh = re.sub("/", "-", date)
+    if date == None:
+        date = "*/*/*"
+    else:
+        date = re.sub("-", "/", date)
+        dateh = re.sub("/", "-", date)
     if filename == None:
-        filename = f"{type}-{dateh}.parquet"
+        # filename = f"{type}-{dateh}.parquet"
+        filename = "*.parquet"
     path = f"{path}/{version}/{type}/{date}/{filename}"
     # return path
     return pl.scan_parquet(path)
 
 
+
 # %% ../nbs/core.ipynb 13
 def scan_chronicle_metrics(
         path: str, # Path to dataset,
-        date:str = "", # date in format `YYYY/MM/DD` 
+        date:str = None, # date in format `YYYY/MM/DD` 
         version: str = "v1" # currently must be `v1`
 ) -> pl.DataFrame:
     "Read a chronicle metrics parquet file into a polars dataframe."
     return scan_chronicle(path, "metrics", date, version = version) 
 
 def scan_chronicle_logs(
-        path: str, # Path to dataset,
-        date:str = "", # date in format `YYYY/MM/DD` 
+        path: None, # Path to dataset,
+        date:str = None, # date in format `YYYY/MM/DD` 
         version: str = "v1" # currently must be `v1`
 ) -> pl.DataFrame:
     "Read a chronicle logs parquet file into a polars dataframe."
@@ -100,7 +105,7 @@ class ChronicleMetrics:
 
 
 
-# %% ../nbs/core.ipynb 18
+# %% ../nbs/core.ipynb 19
 @patch
 def describe(self: ChronicleMetrics) -> pl.DataFrame:
     "Reads metrics dataframe and returns a pandas dataframe with summary of service, name and description of all metrics"
@@ -122,18 +127,29 @@ def describe(self: ChronicleMetrics) -> pl.DataFrame:
 
 
 
-# %% ../nbs/core.ipynb 22
+# %% ../nbs/core.ipynb 23
 @patch
 def filter(self: ChronicleMetrics, 
         name:str, # name of metric to extract
+        service:str = None, # service to extract metric from
         alias:str = None # alias to use for new column
     ) -> pd.DataFrame:
     "Extract a single metric from a metrics dataframe"
     if alias == None:
         alias = name
-    return (
+    
+    df = (
         self._ldf
-        .filter(pl.col("name") == name)
+        .filter(
+            pl.col("name") == name
+        )
+    )
+    
+    if service != None:
+        df = df.filter(pl.col("service") == service) 
+    
+    return (
+        df
         .sort(pl.col("host"), pl.col("timestamp"))
         .select([
             "host",
@@ -145,20 +161,45 @@ def filter(self: ChronicleMetrics,
     )
 
 
-# %% ../nbs/core.ipynb 25
+# %% ../nbs/core.ipynb 26
+import altair as alt
 @patch
 def plot(
         self:ChronicleMetrics, # metrics dataframe
         name:str, # name of metric to extract
-        alias:str = None # alias to use for new column
+        service:str = None, # service to extract metric from
+        title:str = None, # title of plot
+        alias:str = None, # alias to use for new column
+        engine: str = "altair" # plotting engine to use - either plotly or altair
     ) -> px.line: 
     "Plot a selected metric using a Plotly line plot"
 
-    dat = self._ldf.metrics.filter(name, alias)
-    fig = px.line(dat, x='timestamp', y=alias, line_group="host", color="host")
+    if alias == None:
+        alias = name
+
+    if title == None:
+        title = alias
+
+    dat = self._ldf.metrics.filter(name, service=service, alias=alias)
+
+    if engine == 'altair':
+        fig = (
+            alt.Chart(dat, title = title)
+            .mark_line()
+            .encode(
+                x = 'timestamp',
+                y = alias,
+                color = "host"
+            )
+        )
+    else:
+        fig = px.line(dat, x='timestamp', y=alias, line_group="host", color="host", title=title)
+    
     return fig
 
-# %% ../nbs/core.ipynb 28
+
+
+# %% ../nbs/core.ipynb 30
 @pl.api.register_lazyframe_namespace("logs")
 class ChronicleLogs:
     def __init__(self, 
@@ -167,7 +208,7 @@ class ChronicleLogs:
         "Initialise a chronicle logs DataFrame"
         self._ldf = df
 
-# %% ../nbs/core.ipynb 31
+# %% ../nbs/core.ipynb 33
 @patch
 def filter_type(self: ChronicleLogs,
                 value: str # Value to extract 
@@ -184,3 +225,48 @@ def filter_type(self: ChronicleLogs,
         .sort("service", "host", f".{value}", "timestamp")
         .collect()
     )
+
+# %% ../nbs/core.ipynb 36
+@patch
+def connect_logins(
+    self: ChronicleLogs,
+    ) -> pl.DataFrame:
+    "Extract Connect login logs"
+    return (
+        self._ldf
+        .with_columns([
+            pl.col("body").str.json_path_match("$.type").alias("type"),
+            pl.col("body").str.json_path_match("$.action").alias("action"),
+            pl.col("body").str.json_path_match("$.actor_description").alias("username"),
+        ])
+        .filter(
+            (pl.col("service") == "connect") &
+            (pl.col("type") == "audit") &
+            (pl.col("action") == "user_login")
+        )
+        .select("host", "timestamp", "username", "action", "type")
+        .collect()
+    )
+
+
+# %% ../nbs/core.ipynb 39
+@patch
+def workbench_logins(
+    self: ChronicleLogs,
+    ) -> pl.DataFrame:
+    "Extract Workbench login logs"
+    return (
+        self._ldf
+        .with_columns([
+            pl.col("body").str.json_path_match("$.type").alias("type"),
+            pl.col("body").str.json_path_match("$.action").alias("action"),
+            pl.col("body").str.json_path_match("$.username").alias("username"),
+        ])
+        .filter(
+            (pl.col("service") == "workbench") &
+            (pl.col("type") == "auth_login")
+        )
+        .select("host", "timestamp", "username", "action", "type")
+        .collect()
+    )
+

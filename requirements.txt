@@ -11,4 +11,7 @@ pyarrow
 quarto
 s3fs
 shiny
-
+faicons
+strictyaml
+altair
+vega
