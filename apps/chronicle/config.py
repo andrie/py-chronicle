@@ -4,7 +4,7 @@ import os
 import pathlib
 
 def config_get(
-        value: str,
+        value: str = None,
         py_config_active:str = "default",
         file:str = 'config.yaml',
         encoding:str = 'utf-8'
@@ -13,4 +13,7 @@ def config_get(
     dir_path = os.path.dirname(os.path.realpath(__file__))
     file = pathlib.Path(dir_path, file)
     yaml = open(file, encoding = encoding).read()
-    return sy.load(yaml).data[py_config_active][value]
+    if value == None:
+        return sy.load(yaml).data[py_config_active]
+    else:
+        return sy.load(yaml).data[py_config_active][value]

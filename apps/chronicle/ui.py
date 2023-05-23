@@ -6,6 +6,8 @@ from faicons import icon_svg
 # from metrics_explorer import metrics_explorer_ui
 # import ipydatagrid
 
+from mod_metrics_plot import metrics_plot_ui
+
 style="border: 1px solid #999 round;"
 
 app_ui = ui.page_fluid(
@@ -22,25 +24,17 @@ app_ui = ui.page_fluid(
                 ui.h2("Workbench"),
                 x.ui.layout_column_wrap(
                     1/2,
-                    x.ui.card(
-                        x.ui.card_header("CPU"),
-                        x.ui.card_body(
-                            output_widget("ov_pwb_1"),
-                        ),
-                        height = 400,
-                        max_height= 400,
-                        # fill = True
-                    ),
-                    x.ui.card(
-                        x.ui.card_header("Memory"),
-                        output_widget("ov_pwb_2"),
-                    ),
+                    metrics_plot_ui("ov_pwb_1", "CPU"),
+                    metrics_plot_ui("ov_pwb_2", "Memory"),
                 )
             ),
             ui.row(
                 ui.h2("Connect"),
-                ui.column(6, output_widget("ov_pct_1"), style=style),
-                ui.column(6, output_widget("ov_pct_2"), style=style),
+                x.ui.layout_column_wrap(
+                    1/2,
+                    metrics_plot_ui("ov_pct_1", "CPU"),
+                    metrics_plot_ui("ov_pct_2", "Memory"),
+                )
             ),
         ),
 

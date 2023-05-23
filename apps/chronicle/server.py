@@ -14,6 +14,8 @@ logs_data = chr.scan_chronicle_logs(logs_dsn)
 
 # import altair as alt
 # alt.renderers.enable('notebook')
+
+from mod_metrics_plot import metrics_plot_server
     
 def server(input, output, session):
 
@@ -39,26 +41,32 @@ def server(input, output, session):
         # )
         # fig.layout.height = 350
         return fig
+    
+    config = config_get()
+    metrics_plot_server("ov_pwb_1", metrics_data, "workbench", "cpu", config)
+    metrics_plot_server("ov_pwb_2", metrics_data, "workbench", "ram", config)
+    metrics_plot_server("ov_pct_1", metrics_data, "connect", "cpu", config)
+    metrics_plot_server("ov_pct_2", metrics_data, "connect", "ram", config)
 
-    @output(id="ov_pwb_1")
-    @render_widget
-    def _():
-        return plot_from_config(metrics_data, "workbench", "cpu")
+    # @output(id="ov_pwb_1")
+    # @render_widget
+    # def _():
+    #     return plot_from_config(metrics_data, "workbench", "cpu", config)
         
-    @output(id="ov_pwb_2")
-    @render_widget
-    def _():
-        return plot_from_config(metrics_data, "workbench", "ram")
+    # @output(id="ov_pwb_2")
+    # @render_widget
+    # def _():
+    #     return plot_from_config(metrics_data, "workbench", "ram")
         
-    @output(id="ov_pct_1")
-    @render_widget
-    def _():
-        return plot_from_config(metrics_data, "connect", "cpu")
+    # @output(id="ov_pct_1")
+    # @render_widget
+    # def _():
+    #     return plot_from_config(metrics_data, "connect", "cpu")
         
-    @output(id="ov_pct_2")
-    @render_widget
-    def _():
-        return plot_from_config(metrics_data, "connect", "ram")
+    # @output(id="ov_pct_2")
+    # @render_widget
+    # def _():
+    #     return plot_from_config(metrics_data, "connect", "ram")
         
     ### logins -------------------------------------------------------
 
