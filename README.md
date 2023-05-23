@@ -94,180 +94,13 @@ scan_chronicle_metrics("./data", "2023/04/03").head().collect()
 scan_chronicle_metrics("./data", "2023/04/03").metrics.describe()
 ```
 
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>service</th>
-      <th>name</th>
-      <th>description</th>
-      <th>value_column</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td></td>
-      <td>system.cpu.time</td>
-      <td>Total CPU seconds broken down by different sta...</td>
-      <td>value_float</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td></td>
-      <td>system.memory.usage</td>
-      <td>Bytes of memory in use.</td>
-      <td>value_int</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>connect-metrics</td>
-      <td>go_goroutines</td>
-      <td>Number of goroutines that currently exist.</td>
-      <td>value_float</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>connect-metrics</td>
-      <td>go_info</td>
-      <td>Information about the Go environment.</td>
-      <td>value_float</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>connect-metrics</td>
-      <td>go_memstats_alloc_bytes</td>
-      <td>Number of bytes allocated and still in use.</td>
-      <td>value_float</td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-    </tr>
-    <tr>
-      <th>176</th>
-      <td>workbench-metrics</td>
-      <td>scrape_series_added</td>
-      <td>The approximate number of new series in this s...</td>
-      <td>value_float</td>
-    </tr>
-    <tr>
-      <th>177</th>
-      <td>workbench-metrics</td>
-      <td>statsd_metric_mapper_cache_gets_total</td>
-      <td>The count of total metric cache gets.</td>
-      <td>value_float</td>
-    </tr>
-    <tr>
-      <th>178</th>
-      <td>workbench-metrics</td>
-      <td>statsd_metric_mapper_cache_hits_total</td>
-      <td>The count of total metric cache hits.</td>
-      <td>value_float</td>
-    </tr>
-    <tr>
-      <th>179</th>
-      <td>workbench-metrics</td>
-      <td>statsd_metric_mapper_cache_length</td>
-      <td>The count of unique metrics currently cached.</td>
-      <td>value_float</td>
-    </tr>
-    <tr>
-      <th>180</th>
-      <td>workbench-metrics</td>
-      <td>up</td>
-      <td>The scraping was successful</td>
-      <td>value_float</td>
-    </tr>
-  </tbody>
-</table>
-<p>181 rows × 4 columns</p>
-</div>
-
 ``` python
 scan_chronicle_metrics("./data", "2023/04/03").metrics.filter("rsconnect_system_memory_used", "memory").head()
 ```
 
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>host</th>
-      <th>timestamp</th>
-      <th>memory</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>rstudio-connect-68785f94cc-qzvrm</td>
-      <td>2023-04-03 16:00:29.980</td>
-      <td>1.170264e+09</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>rstudio-connect-68785f94cc-qzvrm</td>
-      <td>2023-04-03 16:01:29.980</td>
-      <td>1.187889e+09</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>rstudio-connect-68785f94cc-qzvrm</td>
-      <td>2023-04-03 16:02:29.980</td>
-      <td>1.188659e+09</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>rstudio-connect-68785f94cc-qzvrm</td>
-      <td>2023-04-03 16:03:29.980</td>
-      <td>1.252348e+09</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>rstudio-connect-68785f94cc-qzvrm</td>
-      <td>2023-04-03 16:04:29.980</td>
-      <td>1.259856e+09</td>
-    </tr>
-  </tbody>
-</table>
-</div>
-
 ``` python
-scan_chronicle_metrics("./data", "2023/04/03").metrics.plot("rsconnect_system_memory_used", "memory")
+scan_chronicle_metrics("./data", "2023/04/03").metrics.plot("rsconnect_system_memory_used", alias = "memory")
 ```
-
-    Unable to display output for mime type(s): application/vnd.plotly.v1+json
 
 ## Working with logs
 
@@ -288,13 +121,5 @@ scan_chronicle_logs("./data",  "2023/04/03").head().collect()
 ``` python
 scan_chronicle_logs("./data",  "2023/04/03").logs.filter_type("username")
 ```
-
-<div><style>
-.dataframe > thead > tr > th,
-.dataframe > tbody > tr > td {
-  text-align: right;
-}
-</style>
-<small>shape: (2, 6)</small><table border="1" class="dataframe"><thead><tr><th>service</th><th>host</th><th>timestamp</th><th>.username</th><th>.type</th><th>body</th></tr><tr><td>str</td><td>str</td><td>datetime[ms]</td><td>str</td><td>str</td><td>str</td></tr></thead><tbody><tr><td>&quot;workbench&quot;</td><td>&quot;rstudio-workbe…</td><td>2023-04-03 18:01:26.761</td><td>&quot;james&quot;</td><td>&quot;session_exit&quot;</td><td>&quot;{&quot;pid&quot;:236,&quot;us…</td></tr><tr><td>&quot;workbench&quot;</td><td>&quot;rstudio-workbe…</td><td>2023-04-03 18:01:26.665</td><td>&quot;james&quot;</td><td>&quot;session_suspen…</td><td>&quot;{&quot;pid&quot;:236,&quot;us…</td></tr></tbody></table></div>
 
 ### 

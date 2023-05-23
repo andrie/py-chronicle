@@ -6,7 +6,7 @@ from faicons import icon_svg
 # from metrics_explorer import metrics_explorer_ui
 # import ipydatagrid
 
-style="border: 1px solid #999;"
+style="border: 1px solid #999 round;"
 
 app_ui = ui.page_fluid(
     ui.panel_title("Chronicle metrics explorer"),
@@ -14,25 +14,62 @@ app_ui = ui.page_fluid(
     
         ### overview
         ui.nav(
-            x.ui.value_box(
-                "Overview", "All the things"
+            x.ui.card(
+                x.ui.card_header("Overview"),
+                "Top level metrics"
             ), 
             ui.row(
                 ui.h2("Workbench"),
-                ui.column(6, "CPU", style=style),
-                ui.column(6, "Memory", style=style),
+                x.ui.layout_column_wrap(
+                    1/2,
+                    x.ui.card(
+                        x.ui.card_header("CPU"),
+                        x.ui.card_body(
+                            output_widget("ov_pwb_1"),
+                        ),
+                        height = 400,
+                        max_height= 400,
+                        # fill = True
+                    ),
+                    x.ui.card(
+                        x.ui.card_header("Memory"),
+                        output_widget("ov_pwb_2"),
+                    ),
+                )
             ),
             ui.row(
                 ui.h2("Connect"),
-                ui.column(6, "CPU", style=style),
-                ui.column(6, "Memory", style=style),
+                ui.column(6, output_widget("ov_pct_1"), style=style),
+                ui.column(6, output_widget("ov_pct_2"), style=style),
+            ),
+        ),
+
+        ### logins
+        ui.nav(
+            x.ui.card(
+                x.ui.card_header("Logins"),
+                "List the logins for each service"
+                # height="250px"
+            ),
+            ui.row(
+                x.ui.card(
+                    x.ui.card_header("Workbench logins"),
+                    output_widget("logins_pwb"),
+                )
+            ),
+            ui.row(
+                x.ui.card(
+                    x.ui.card_header("Connect logins"),
+                    output_widget("logins_pct"),
+                )
             ),
         ),
 
         ### metrics explorer
         ui.nav(
             x.ui.card(
-                x.ui.card_header("Metrics explorer")
+                x.ui.card_header("Metrics explorer"),
+                "Click into a metric to view a plot"
                 # height="250px"
             ),
             # metrics_explorer_ui(),
@@ -48,15 +85,15 @@ app_ui = ui.page_fluid(
         ),
 
         ### dynamic
-        ui.nav(
-            x.ui.value_box(
-                "Dynamic",
-                ui.output_ui("btn_value"),
-                showcase=icon_svg("flask", height="60px")
-            ),
-            ui.h2("To be developed"),
-            ui.p("This is a placeholder for a future tab."),
-            ui.input_action_button("btn", "Click me"),
-        ),
+        # ui.nav(
+        #     x.ui.value_box(
+        #         "Dynamic",
+        #         ui.output_ui("btn_value"),
+        #         showcase=icon_svg("flask", height="60px")
+        #     ),
+        #     ui.h2("To be developed"),
+        #     ui.p("This is a placeholder for a future tab."),
+        #     ui.input_action_button("btn", "Click me"),
+        # ),
     )
 )
