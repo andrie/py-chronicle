@@ -6,39 +6,39 @@ from faicons import icon_svg
 # from metrics_explorer import metrics_explorer_ui
 # import ipydatagrid
 
+from mod_metrics_explorer import metrics_explorer_ui, metrics_explorer_server
 from mod_metrics_plot import metrics_plot_ui
+from mod_logs_explorer import logs_explorer_ui
 
-style="border: 1px solid #999 round;"
+# style="border: 1px solid #999 round;"
 
 app_ui = ui.page_fluid(
     ui.panel_title("Chronicle metrics explorer"),
     ui.navset_tab_card(
     
-        ### overview
+        ### overview -------------------------------------------------------
         ui.nav(
             x.ui.card(
                 x.ui.card_header("Overview"),
                 "Top level metrics"
             ), 
-            ui.row(
-                ui.h2("Workbench"),
-                x.ui.layout_column_wrap(
-                    1/2,
-                    metrics_plot_ui("ov_pwb_1", "CPU"),
-                    metrics_plot_ui("ov_pwb_2", "Memory"),
+                x.ui.card(
+                    x.ui.card_header("Workbench"),
+                    x.ui.layout_column_wrap(1/2,
+                        metrics_plot_ui("ov_pwb_1", "CPU"),
+                        metrics_plot_ui("ov_pwb_2", "Memory"),
+                    )
+                ),
+                x.ui.card(
+                    x.ui.card_header("Connect"),
+                    x.ui.layout_column_wrap( 1/2,
+                        metrics_plot_ui("ov_pct_1", "CPU"),
+                        metrics_plot_ui("ov_pct_2", "Memory"),
+                    )
                 )
-            ),
-            ui.row(
-                ui.h2("Connect"),
-                x.ui.layout_column_wrap(
-                    1/2,
-                    metrics_plot_ui("ov_pct_1", "CPU"),
-                    metrics_plot_ui("ov_pct_2", "Memory"),
-                )
-            ),
         ),
 
-        ### logins
+        ### logins -------------------------------------------------------
         ui.nav(
             x.ui.card(
                 x.ui.card_header("Logins"),
@@ -46,48 +46,38 @@ app_ui = ui.page_fluid(
                 # height="250px"
             ),
             ui.row(
-                x.ui.card(
-                    x.ui.card_header("Workbench logins"),
-                    output_widget("logins_pwb"),
-                )
-            ),
-            ui.row(
-                x.ui.card(
-                    x.ui.card_header("Connect logins"),
-                    output_widget("logins_pct"),
-                )
+                x.ui.layout_column_wrap(
+                    1/2,
+                    x.ui.card(
+                        x.ui.card_header("Workbench logins"),
+                        output_widget("logins_pwb"),
+                    ),
+                    x.ui.card(
+                        x.ui.card_header("Connect logins"),
+                        output_widget("logins_pct"),
+                    ),
+                ),
             ),
         ),
 
-        ### metrics explorer
+        ### metrics explorer -------------------------------------------------------
         ui.nav(
             x.ui.card(
                 x.ui.card_header("Metrics explorer"),
                 "Click into a metric to view a plot"
                 # height="250px"
             ),
-            # metrics_explorer_ui(),
-            # ui.h2("Metrics explorer"),
-            ui.row(
-                ui.input_text("exp_filter_service", "Filter on service", placeholder="Enter text"),
-                ui.input_text("exp_filter_names", "Filter on name", placeholder="Enter text")
+            metrics_explorer_ui("metrics_explorer"),
+        ),
+        
+        ### logs explorer -------------------------------------------------------
+        ui.nav(
+            x.ui.card(
+                x.ui.card_header("Logs explorer"),
+                "Explore unique log types"
             ),
-            output_widget("exp_metrics_grid"),
-            ui.output_text_verbatim("exp_selected_metric"),
-            output_widget("exp_metrics_plot"),
-            # metrics_explorer_ui()
+            logs_explorer_ui("logs_explorer", "Workbench types"),
         ),
 
-        ### dynamic
-        # ui.nav(
-        #     x.ui.value_box(
-        #         "Dynamic",
-        #         ui.output_ui("btn_value"),
-        #         showcase=icon_svg("flask", height="60px")
-        #     ),
-        #     ui.h2("To be developed"),
-        #     ui.p("This is a placeholder for a future tab."),
-        #     ui.input_action_button("btn", "Click me"),
-        # ),
     )
 )

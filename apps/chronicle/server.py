@@ -3,8 +3,9 @@ from shiny import App, render, ui, req, reactive
 from shinywidgets import render_widget, register_widget, reactive_read
 import chronicle.core as chr
 from config import config_get
-import vega
-# from metrics_explorer import metrics_explorer_server
+# import vega
+from mod_metrics_explorer import metrics_explorer_server
+from mod_logs_explorer import logs_explorer_server
 
 metrics_dsn = "./nbs/data"
 metrics_data = chr.scan_chronicle_metrics(metrics_dsn, "2023/04/03")
@@ -28,45 +29,12 @@ def server(input, output, session):
         x = config_get("workbench")["cpu"]
         return str(x)
     
-    def plot_from_config(df, service, config):
-        cf = config_get(service)[config]
-        # print(cf)
-        # fig = df.metrics.plot(cf["name"], cf["service"], cf["title"], engine = "plotly")
-        fig = df.metrics.plot(cf["name"], cf["service"], cf["title"], engine = "altair")
-        ### altair
-        # fig.properties(
-        #     # height = 'container',
-        #     height = 200,
-        #     width = 'container',
-        # )
-        # fig.layout.height = 350
-        return fig
-    
     config = config_get()
     metrics_plot_server("ov_pwb_1", metrics_data, "workbench", "cpu", config)
     metrics_plot_server("ov_pwb_2", metrics_data, "workbench", "ram", config)
     metrics_plot_server("ov_pct_1", metrics_data, "connect", "cpu", config)
     metrics_plot_server("ov_pct_2", metrics_data, "connect", "ram", config)
 
-    # @output(id="ov_pwb_1")
-    # @render_widget
-    # def _():
-    #     return plot_from_config(metrics_data, "workbench", "cpu", config)
-        
-    # @output(id="ov_pwb_2")
-    # @render_widget
-    # def _():
-    #     return plot_from_config(metrics_data, "workbench", "ram")
-        
-    # @output(id="ov_pct_1")
-    # @render_widget
-    # def _():
-    #     return plot_from_config(metrics_data, "connect", "cpu")
-        
-    # @output(id="ov_pct_2")
-    # @render_widget
-    # def _():
-    #     return plot_from_config(metrics_data, "connect", "ram")
         
     ### logins -------------------------------------------------------
 
@@ -78,7 +46,7 @@ def server(input, output, session):
         grid = ipydatagrid.DataGrid(
             dat, 
             selection_mode = "row",
-            layout = {"height": "16em"}, 
+            # layout = {"height": "16em"}, 
             base_column_size=100,
             # column_widths = {"name": 150, "description": 300}
         )
@@ -92,7 +60,7 @@ def server(input, output, session):
         grid = ipydatagrid.DataGrid(
             dat, 
             selection_mode = "row",
-            layout = {"height": "16em"}, 
+            # layout = {"height": "16em"}, 
             base_column_size=100,
             # column_widths = {"name": 150, "description": 300}
         )
@@ -100,60 +68,30 @@ def server(input, output, session):
         return grid
 
     ### metrics explorer -------------------------------------------------------
+    metrics_explorer_server("metrics_explorer", metrics_data)
 
-    import ipydatagrid
-    df = metrics_data.metrics.describe()
 
-    @reactive.Calc
-    def exp_dat():
-        # return df
-        f = input.exp_filter_names()
-        dat = df
-        if f != "":
-            dat = dat[dat.name.str.contains(f)]
-        f = input.exp_filter_service()
-        if f != "":
-            dat = dat[dat.service.str.contains(f)]
-        return dat
-    
+    ### logs explorer -------------------------------------------------------
+    # from itables.javascript import _datatables_repr_ as DT
+    # @output(id="logs_workbench_types")
+    # @render.ui
+    # def _():
+    #     dat = logs_data.logs.unique_workbench_types()
+    #     return ui.HTML(DT(dat))
 
-    @reactive.Calc
-    def exp_metrics_grid():
-        grid = ipydatagrid.DataGrid(
-            exp_dat(), 
-            selection_mode = "row",
-            layout = {"height": "16em"}, 
-            base_column_size=100,
-            column_widths = {"name": 150, "description": 300}
-        )
-        register_widget("exp_metrics_grid", grid, session = session)
-        return grid
-    # metrics_explorer_server(input, output, session, metrics_data)
-    
-    @reactive.Calc
-    def exp_extract_metric():
-        req(reactive_read(exp_metrics_grid(), "selections"))
-        z = reactive_read(exp_metrics_grid(), "selected_cell_values")
-        return z[1]
 
-    @output(id="exp_selected_metric")
-    @render.text
-    def _():
-        req(exp_extract_metric())
-        name = exp_extract_metric()
-        service = reactive_read(exp_metrics_grid(), "selected_cell_values")[0]
-        title = reactive_read(exp_metrics_grid(), "selected_cell_values")[2]
-        return "name:    " + name + "\n" + "service: " + service + "\n" + "title:   " + title
+    # @output(id="logs_connect_actions")
+    # @render.ui
+    # def _():
+    #     dat = logs_data.logs.unique_connect_actions()
+    #     return ui.HTML(DT(dat))
 
-    @output(id="exp_metrics_plot")
-    @render_widget
-    def _():
-        return metrics_data.metrics.plot(exp_extract_metric(), alias=exp_extract_metric())
+    logs_explorer_server("logs_explorer", logs_data, "workbench")
 
     ### dynamic -------------------------------------------------------
 
-    @output
-    @render.ui
-    @reactive.event(input.btn)
-    def btn_value():
-        return str(input.btn())
+    # @output
+    # @render.ui
+    # @reactive.event(input.btn)
+    # def btn_value():
+    #     return str(input.btn())

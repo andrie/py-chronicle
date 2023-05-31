@@ -10,7 +10,6 @@ import pyarrow.parquet as pq
 import pyarrow.dataset as ds
 from s3fs import S3FileSystem
 import pandas as pd
-import plotly.express as px
 from fastcore.basics import patch
 import re
 
@@ -162,44 +161,6 @@ def filter(self: ChronicleMetrics,
 
 
 # %% ../nbs/core.ipynb 26
-import altair as alt
-@patch
-def plot(
-        self:ChronicleMetrics, # metrics dataframe
-        name:str, # name of metric to extract
-        service:str = None, # service to extract metric from
-        title:str = None, # title of plot
-        alias:str = None, # alias to use for new column
-        engine: str = "altair" # plotting engine to use - either plotly or altair
-    ) -> px.line: 
-    "Plot a selected metric using a Plotly line plot"
-
-    if alias == None:
-        alias = name
-
-    if title == None:
-        title = alias
-
-    dat = self._ldf.metrics.filter(name, service=service, alias=alias)
-
-    if engine == 'altair':
-        fig = (
-            alt.Chart(dat, title = title)
-            .mark_line()
-            .encode(
-                x = 'timestamp',
-                y = alias,
-                color = "host"
-            )
-        )
-    else:
-        fig = px.line(dat, x='timestamp', y=alias, line_group="host", color="host", title=title)
-    
-    return fig
-
-
-
-# %% ../nbs/core.ipynb 30
 @pl.api.register_lazyframe_namespace("logs")
 class ChronicleLogs:
     def __init__(self, 
@@ -208,7 +169,7 @@ class ChronicleLogs:
         "Initialise a chronicle logs DataFrame"
         self._ldf = df
 
-# %% ../nbs/core.ipynb 33
+# %% ../nbs/core.ipynb 29
 @patch
 def filter_type(self: ChronicleLogs,
                 value: str # Value to extract 
@@ -226,7 +187,27 @@ def filter_type(self: ChronicleLogs,
         .collect()
     )
 
-# %% ../nbs/core.ipynb 36
+# %% ../nbs/core.ipynb 32
+@patch
+def unique_connect_actions(self: ChronicleLogs,
+    ) -> pd.DataFrame:
+    "Extract a sample of unique connect actions"
+    return (
+        self._ldf
+        .filter(pl.col("service") == "connect")
+        .with_columns([
+                pl.col("body").str.json_path_match("$.msg").alias("message"),
+                pl.col("body").str.json_path_match("$.actor_description").alias("username"),
+                pl.col("body").str.json_path_match("$.action").alias("action"),
+        ])
+        .unique("action")
+        .select("service", "action", "attributes", "body")
+        .collect()
+        .to_pandas()
+    )
+
+
+# %% ../nbs/core.ipynb 35
 @patch
 def connect_logins(
     self: ChronicleLogs,
@@ -249,7 +230,53 @@ def connect_logins(
     )
 
 
-# %% ../nbs/core.ipynb 39
+# %% ../nbs/core.ipynb 38
+@patch
+def extract_connect_audit_logs(
+    self: ChronicleLogs,
+    type: str,
+    ) -> pl.DataFrame:
+    "Extract Connect audit logs"
+    return (
+        self._ldf
+        .with_columns([
+            pl.col("body").str.json_path_match("$.type").alias("type"),
+            pl.col("body").str.json_path_match("$.action").alias("action"),
+            pl.col("body").str.json_path_match("$.actor_description").alias("username"),
+            pl.col("body").str.json_path_match("$.actor_guid").alias("guid"),
+            pl.col("body").str.json_path_match("$.msg").alias("msg"),
+        ])
+        .filter(
+            (pl.col("service") == "connect") &
+            (pl.col("action") == type)
+        )
+        .select("host", "timestamp", "username", "action", "type", "guid", "msg", "attributes")
+        .collect()
+    )
+
+
+
+
+# %% ../nbs/core.ipynb 41
+@patch
+def unique_workbench_types(self: ChronicleLogs,
+    ) -> pd.DataFrame:
+    "Extract a sample of unique workbench types"
+    return (
+        self._ldf
+        .filter(pl.col("service") == "workbench")
+        .with_columns([
+                pl.col("body").str.json_path_match("$.type").alias("type"),
+                pl.col("body").str.json_path_match("$.username").alias("username"),
+        ])
+        .unique("type")
+        .select("service", "type", "attributes", "body")
+        .collect()
+        .to_pandas()
+    )
+
+
+# %% ../nbs/core.ipynb 44
 @patch
 def workbench_logins(
     self: ChronicleLogs,
@@ -269,4 +296,66 @@ def workbench_logins(
         .select("host", "timestamp", "username", "action", "type")
         .collect()
     )
+
+
+# %% ../nbs/core.ipynb 47
+@patch
+def extract_workbench_audit_logs(
+    self: ChronicleLogs,
+    type: str,
+    ) -> pl.DataFrame:
+    "Extract Workbench login logs"
+    return (
+        self._ldf
+        .with_columns([
+            pl.col("body").str.json_path_match("$.type").alias("type"),
+            pl.col("body").str.json_path_match("$.action").alias("action"),
+            pl.col("body").str.json_path_match("$.username").alias("username"),
+        ])
+        .filter(
+            (pl.col("service") == "workbench") &
+            (pl.col("type") == type)
+        )
+        .select("host", "timestamp", "username", "action", "type", "attributes")
+        .collect()
+    )
+
+
+
+# %% ../nbs/core.ipynb 49
+@patch
+def extract_workbench_audit_cols(
+    self: ChronicleLogs,
+    type: str,
+    ) -> pl.DataFrame:
+    "Extract Workbench audit columns"
+    return (
+        self._ldf
+        .with_columns([
+            pl.col("body").str.json_path_match("$.type").alias("type"),
+            pl.col("body").str.json_path_match("$.action").alias("action"),
+            pl.col("body").str.json_path_match("$.username").alias("username"),
+        ])
+        .filter(
+            (pl.col("service") == "workbench") &
+            (pl.col("type") == type)
+        )
+        .select("host", "timestamp", "username", "action", "type", "attributes")
+        # .head(1)
+        # .explode("attributes").unnest("attributes") #.drop("value")
+        # .with_columns([
+        #     # pl.col("attributes").arr.to_struct().apply(lambda x: x[1])
+        #     pl.col("attributes").apply(lambda x: x.sort())
+        #     # pl.col("attributes").arr.to_struct().to_dict()
+        #     # pl.col("attributes").to_dict()
+        # ])
+        # .select("attributes")
+        .collect()
+        # .to_struct("attributes")
+        # .explode("attributes")
+        # .unnest()
+        # .to_dicts()
+        # .to_pandas()
+    )
+
 
