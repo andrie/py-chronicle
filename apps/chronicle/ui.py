@@ -6,11 +6,17 @@ from faicons import icon_svg
 # from metrics_explorer import metrics_explorer_ui
 # import ipydatagrid
 
-from mod_metrics_explorer import metrics_explorer_ui, metrics_explorer_server
+from mod_metrics_explorer import metrics_explorer_ui
 from mod_metrics_plot import metrics_plot_ui
 from mod_logs_explorer import logs_explorer_ui
 
 # style="border: 1px solid #999 round;"
+
+def col3(x):
+    return ui.column(3, x)
+
+def col4(x):
+    return ui.column(4, x)
 
 app_ui = ui.page_fluid(
     ui.panel_title("Chronicle metrics explorer"),
@@ -24,16 +30,21 @@ app_ui = ui.page_fluid(
             ), 
                 x.ui.card(
                     x.ui.card_header("Workbench"),
-                    x.ui.layout_column_wrap(1/2,
-                        metrics_plot_ui("ov_pwb_1", "CPU"),
-                        metrics_plot_ui("ov_pwb_2", "Memory"),
-                    )
+                    x.ui.layout_column_wrap(
+                        1/3,
+                        metrics_plot_ui("ov_pwb_1", "System CPU"),
+                        metrics_plot_ui("ov_pwb_2", "User CPU"),
+                        metrics_plot_ui("ov_pwb_3", "Memory"),
+                    ),
                 ),
                 x.ui.card(
                     x.ui.card_header("Connect"),
-                    x.ui.layout_column_wrap( 1/2,
-                        metrics_plot_ui("ov_pct_1", "CPU"),
-                        metrics_plot_ui("ov_pct_2", "Memory"),
+                    x.ui.layout_column_wrap(
+                        1/4,
+                        metrics_plot_ui("ov_pct_1", "System CPU"),
+                        metrics_plot_ui("ov_pct_2", "User CPU"),
+                        metrics_plot_ui("ov_pct_3", "Memory"),
+                        metrics_plot_ui("ov_pct_4",  "Licensed user count (365 days)"),
                     )
                 )
         ),
@@ -46,6 +57,7 @@ app_ui = ui.page_fluid(
                 # height="250px"
             ),
             ui.row(
+                # ui.column
                 x.ui.layout_column_wrap(
                     1/2,
                     x.ui.card(
@@ -81,3 +93,4 @@ app_ui = ui.page_fluid(
 
     )
 )
+

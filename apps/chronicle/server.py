@@ -3,7 +3,7 @@ from shiny import App, render, ui, req, reactive
 from shinywidgets import render_widget, register_widget, reactive_read
 import chronicle.core as chr
 from config import config_get
-# import vega
+import vega
 from mod_metrics_explorer import metrics_explorer_server
 from mod_logs_explorer import logs_explorer_server
 
@@ -19,6 +19,7 @@ logs_data = chr.scan_chronicle_logs(logs_dsn)
 from mod_metrics_plot import metrics_plot_server
     
 def server(input, output, session):
+    # return
 
 
     ### overview -------------------------------------------------------
@@ -31,10 +32,14 @@ def server(input, output, session):
     
     config = config_get()
     metrics_plot_server("ov_pwb_1", metrics_data, "workbench", "cpu", config)
-    metrics_plot_server("ov_pwb_2", metrics_data, "workbench", "ram", config)
-    metrics_plot_server("ov_pct_1", metrics_data, "connect", "cpu", config)
-    metrics_plot_server("ov_pct_2", metrics_data, "connect", "ram", config)
+    metrics_plot_server("ov_pwb_2", metrics_data, "workbench", "cpu_user", config)
+    metrics_plot_server("ov_pwb_3", metrics_data, "workbench", "ram", config)
 
+    metrics_plot_server("ov_pct_1", metrics_data, "connect", "cpu", config)
+    metrics_plot_server("ov_pct_2", metrics_data, "connect", "cpu_user", config)
+    metrics_plot_server("ov_pct_3", metrics_data, "connect", "ram", config)
+    metrics_plot_server("ov_pct_4", metrics_data, "connect", "license_users", config)
+    
         
     ### logins -------------------------------------------------------
 
@@ -67,31 +72,11 @@ def server(input, output, session):
         register_widget("logins_pct", grid, session = session)
         return grid
 
+
     ### metrics explorer -------------------------------------------------------
     metrics_explorer_server("metrics_explorer", metrics_data)
 
 
     ### logs explorer -------------------------------------------------------
-    # from itables.javascript import _datatables_repr_ as DT
-    # @output(id="logs_workbench_types")
-    # @render.ui
-    # def _():
-    #     dat = logs_data.logs.unique_workbench_types()
-    #     return ui.HTML(DT(dat))
-
-
-    # @output(id="logs_connect_actions")
-    # @render.ui
-    # def _():
-    #     dat = logs_data.logs.unique_connect_actions()
-    #     return ui.HTML(DT(dat))
 
     logs_explorer_server("logs_explorer", logs_data, "workbench")
-
-    ### dynamic -------------------------------------------------------
-
-    # @output
-    # @render.ui
-    # @reactive.event(input.btn)
-    # def btn_value():
-    #     return str(input.btn())

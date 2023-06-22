@@ -3,6 +3,7 @@ from shiny import module, reactive, render, ui, req
 import shiny.experimental as x
 from shinywidgets import output_widget, render_widget, register_widget, reactive_read
 from chronicle.plot import *
+from mod_itables import itables_ui, itables_server
 
 # ============================================================
 # Module: logs_explorer
@@ -27,6 +28,7 @@ def logs_explorer_ui(label: str = "Workbench types"):
                 x.ui.card_header("Selected"),
                 # output_widget("exp_logs_out")
                 ui.output_ui("exp_logs_out"),
+                # itables_ui("exp_logs_out"),
             )
         )
     )
@@ -35,6 +37,7 @@ def logs_explorer_ui(label: str = "Workbench types"):
 @module.server
 def logs_explorer_server(input, output, session, logs_data, service):
     import ipydatagrid
+
 
 
     # @reactive.Calc
@@ -80,4 +83,23 @@ def logs_explorer_server(input, output, session, logs_data, service):
             grid_data = logs_data.logs.extract_connect_audit_logs(type).to_pandas()
             grid_data = grid_data.drop("attributes", axis = 1)
         return ui.HTML(DT(grid_data))
+
+
+    # @reactive.Calc
+    # def get_grid_data():
+
+    # @output(id="exp_logs_out" )
+    # @render.ui
+    # def _():
+    #     # from itables.javascript import _datatables_repr_ as DT
+    #     type = input.log_type()
+    #     # print(f"type: {type}")
+    #     if input.service() == "workbench":
+    #         grid_data = logs_data.logs.extract_workbench_audit_logs(type).to_pandas()
+    #         grid_data = grid_data.drop("attributes", axis = 1)
+    #     elif input.service() == "connect":
+    #         grid_data = logs_data.logs.extract_connect_audit_logs(type).to_pandas()
+    #         grid_data = grid_data.drop("attributes", axis = 1)
+    #     # return grid_data
+    #     return itables_server("exp_logs_out", grid_data)
 

@@ -36,7 +36,10 @@ def metrics_explorer_ui(label: str = "Increment counter"):
 
 @module.server
 def metrics_explorer_server(input, output, session, metrics_data):
+     
+    # import ipdb; ipdb.set_trace()
     import ipydatagrid
+
     df = metrics_data.metrics.describe()
 
     @reactive.Calc

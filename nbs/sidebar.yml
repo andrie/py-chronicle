@@ -4,3 +4,5 @@ website:
       - index.ipynb
       - core.ipynb
       - io.ipynb
+      - plot.ipynb
+      - read.ipynb

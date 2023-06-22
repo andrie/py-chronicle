@@ -7,8 +7,6 @@ __all__ = ['write_parquet', 'get_s3_bucket_dates']
 import polars as pl
 import pyarrow.parquet as pq
 from pyarrow import fs
-# import pyarrow.dataset as ds
-# from s3fs import S3FileSystem
 import tempfile
 import os
 import re
@@ -17,7 +15,7 @@ from .core import scan_chronicle_metrics
 # %% ../nbs/io.ipynb 4
 def write_parquet(
         x: pl.DataFrame, # polars DataFrame
-        filename:str # Full file file name
+        filename:str # Full file name
     ) -> None:
     "Write chronicle data to parquet file"
     return pq.write_table(x.to_arrow(), filename)

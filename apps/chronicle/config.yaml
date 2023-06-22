@@ -11,7 +11,11 @@ default:
       name:    cpu_percent
       service: workbench-health
       title:   Workbench CPU used (percentage)
-      alias: 
+      alias:
+    cpu_user:
+      name:    rstudio_system_cpu_usage_user
+      service: workbench-metrics
+      title:   Graphite metric rstudio_system_cpu_usage_user 
   connect:
     ram: 
       name:    rsconnect_system_memory_used
@@ -22,4 +26,12 @@ default:
       name:    rsconnect_system_cpu_user
       service: connect-metrics
       title:   Connect system CPU used
-      alias: 
+      alias:
+    cpu_user:
+      name:    rsconnect_cpu_user
+      service: connect-metrics
+      title:   Graphite metric rsconnect_cpu_user
+    license_users:
+      name:    rsconnect_license_active365day
+      service: connect-metrics
+      title:   Graphite metric rsconnect_license_active365day

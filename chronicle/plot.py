@@ -19,7 +19,6 @@ def plot(
         title:str = None, # title of plot
         alias:str = None, # alias to use for new column
         sparkline: bool = None, # whether to use sparkline
-        # engine: str = "altair" # plotting engine to use - either plotly or altair
     ) -> go.Figure:
     "Plot a selected metric using a Plotly line plot"
 
@@ -31,26 +30,21 @@ def plot(
         sparkline = False
     
     dat = self._ldf.metrics.filter(name, service=service, alias=alias)
+    # return dat
 
-    # if engine == 'altair':
-    #     import altair as alt
-    #     fig = (
-    #         alt.Chart(dat, title = title)
-    #         .mark_line()
-    #         .encode(
-    #             x = 'timestamp',
-    #             y = alias,
-    #             color = "host"
-    #         )
-    #     )
-
+    groups = dat.groupby("host")
+    # return(groups)
     fig = go.Figure()
-    fig.add_trace(go.Scatter(
-        x=dat['timestamp'], 
-        y=dat[alias], 
-        name=alias,
-        fill = 'tozeroy',
-    ))
+
+    for gname, group in groups:
+        # print(f"gname = {gname}")
+
+        fig.add_trace(go.Scatter(
+            x=group['timestamp'], 
+            y=group[alias], 
+            name=gname,
+            fill = 'tozeroy',
+        ))
     
     if sparkline:
         fig.update_layout(
@@ -62,8 +56,11 @@ def plot(
             paper_bgcolor=None,
             plot_bgcolor=None,
         )
+    else:
+        fig.update_layout(
+            showlegend=False,
+        )
     
     return fig
 
 
-# scan_chronicle_metrics("./data", "2023/04/03").metrics.plot("rsconnect_system_memory_used", service = "connect-metrics", alias = "memory", sparkline = True)
