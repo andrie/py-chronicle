@@ -1,0 +1,107 @@
+[
+  {
+    "objectID": "read.html",
+    "href": "read.html",
+    "title": "read",
+    "section": "",
+    "text": "source\n\n\n\n read_chronicle_logs (path:str, date:str='', version:str='v1')\n\nRead a chronicle logs parquet file into a polars dataframe.\n\n\n\n\nType\nDefault\nDetails\n\n\n\n\npath\nstr\n\nPath to dataset,\n\n\ndate\nstr\n\ndate in format YYYY/MM/DD\n\n\nversion\nstr\nv1\ncurrently must be v1\n\n\nReturns\nDataFrame\n\n\n\n\n\n\nsource\n\n\n\n\n read_chronicle_metrics (path:str, date:str='', version:str='v1')\n\nRead a chronicle metrics parquet file into a polars dataframe.\n\n\n\n\nType\nDefault\nDetails\n\n\n\n\npath\nstr\n\nPath to dataset,\n\n\ndate\nstr\n\ndate in format YYYY/MM/DD\n\n\nversion\nstr\nv1\ncurrently must be v1\n\n\nReturns\nDataFrame\n\n\n\n\n\n\nz = read_chronicle_metrics(\"./data\", \"2023/04/03\")\nassert type(z) == pl.DataFrame\nassert z.columns == [\n    'service',\n    'host',\n    'os',\n    'attributes',\n    'name',\n    'description',\n    'unit',\n    'type',\n    'timestamp',\n    'value_float',\n    'value_int',\n    'value_uint',\n    'value_column'\n]\n\n\nz = read_chronicle_logs(\"./data\", \"2023/04/03\")\nassert type(z) == pl.dataframe.frame.DataFrame\nassert z.columns == [\n    'service', \n    'host', \n    'os', \n    'attributes', \n    'body', \n    'timestamp'\n]"
+  },
+  {
+    "objectID": "read.html#using-the-read-interface",
+    "href": "read.html#using-the-read-interface",
+    "title": "read",
+    "section": "",
+    "text": "source\n\n\n\n read_chronicle_logs (path:str, date:str='', version:str='v1')\n\nRead a chronicle logs parquet file into a polars dataframe.\n\n\n\n\nType\nDefault\nDetails\n\n\n\n\npath\nstr\n\nPath to dataset,\n\n\ndate\nstr\n\ndate in format YYYY/MM/DD\n\n\nversion\nstr\nv1\ncurrently must be v1\n\n\nReturns\nDataFrame\n\n\n\n\n\n\nsource\n\n\n\n\n read_chronicle_metrics (path:str, date:str='', version:str='v1')\n\nRead a chronicle metrics parquet file into a polars dataframe.\n\n\n\n\nType\nDefault\nDetails\n\n\n\n\npath\nstr\n\nPath to dataset,\n\n\ndate\nstr\n\ndate in format YYYY/MM/DD\n\n\nversion\nstr\nv1\ncurrently must be v1\n\n\nReturns\nDataFrame\n\n\n\n\n\n\nz = read_chronicle_metrics(\"./data\", \"2023/04/03\")\nassert type(z) == pl.DataFrame\nassert z.columns == [\n    'service',\n    'host',\n    'os',\n    'attributes',\n    'name',\n    'description',\n    'unit',\n    'type',\n    'timestamp',\n    'value_float',\n    'value_int',\n    'value_uint',\n    'value_column'\n]\n\n\nz = read_chronicle_logs(\"./data\", \"2023/04/03\")\nassert type(z) == pl.dataframe.frame.DataFrame\nassert z.columns == [\n    'service', \n    'host', \n    'os', \n    'attributes', \n    'body', \n    'timestamp'\n]"
+  },
+  {
+    "objectID": "io.html",
+    "href": "io.html",
+    "title": "io",
+    "section": "",
+    "text": "source\n\nwrite_parquet\n\n write_parquet (x:polars.dataframe.frame.DataFrame, filename:str)\n\nWrite chronicle data to parquet file\n\n\n\n\nType\nDetails\n\n\n\n\nx\nDataFrame\npolars DataFrame\n\n\nfilename\nstr\nFull file name\n\n\nReturns\nNone\n\n\n\n\n\nm = scan_chronicle_metrics(\"./data\", \"2023/04/03\").collect()\n\n# create a temporary file\ntf = tempfile.NamedTemporaryFile(suffix = \".parquet\")\nassert os.path.getsize(tf.name) == 0\nz = write_parquet(m, tf)\n\nassert os.path.getsize(tf.name) &gt; 0\nassert z is None\n\n\nsource\n\n\nget_s3_bucket_dates\n\n get_s3_bucket_dates (bucket:str, type='logs', version='v1')\n\nGet a list of dates for which there are chronicle logs or metrics in an S3 bucket\n\n\n\n\nType\nDefault\nDetails\n\n\n\n\nbucket\nstr\n\nS3 bucket name, without the “s3://” prefix\n\n\ntype\nstr\nlogs\n“logs” or “metrics”\n\n\nversion\nstr\nv1\n“v1” or “v2”\n\n\nReturns\nlist\n\n\n\n\n\n\nbucket = \"colorado-posit-chronicle\"\nget_s3_bucket_dates(bucket, \"metrics\")"
+  },
+  {
+    "objectID": "plot.html",
+    "href": "plot.html",
+    "title": "plot",
+    "section": "",
+    "text": "You can plot a single metric using .metrics.plot(). This will create a plot based on plotly.\n\nsource\n\nChronicleMetrics.plot\n\n ChronicleMetrics.plot (name:str, service:str=None, title:str=None,\n                        alias:str=None, sparkline:bool=None)\n\nPlot a selected metric using a Plotly line plot\n\n\n\n\nType\nDefault\nDetails\n\n\n\n\nname\nstr\n\nname of metric to extract\n\n\nservice\nstr\nNone\nservice to extract metric from\n\n\ntitle\nstr\nNone\ntitle of plot\n\n\nalias\nstr\nNone\nalias to use for new column\n\n\nsparkline\nbool\nNone\nwhether to use sparkline\n\n\nReturns\nFigure\n\n\n\n\n\n\nm = (\n    scan_chronicle_metrics(\"./data\", \"2023/04/03\")\n    .metrics.plot(\"rstudio_system_memory_used\", service = \"workbench-metrics\", alias = \"memory\")\n)\nassert type(m) == go.Figure\nm\n\nUnable to display output for mime type(s): application/vnd.plotly.v1+json\n\n\n\n# # change plotly plot into sparkline\n# layout = {\n#     'xaxis': {'showgrid': False, 'showticklabels': False, 'zeroline': False},\n#     'yasix': {'showgrid': False, 'showticklabels': False, 'zeroline': False},\n#     'showlegend': False,\n# }\n\n# p.update_layout(\n#     showlegend=False,\n#     xaxis=dict(showgrid=False, showticklabels=False, zeroline=False, visible=False),\n#     yaxis=dict(showgrid=False, showticklabels=False, zeroline=False, visible=False),\n#     title=None,\n#     margin=dict(l=0, r=0, t=0, b=0),\n#     paper_bgcolor=\"rgba(0,0,0,0)\",\n#     plot_bgcolor=\"rgba(0,0,0,0)\",\n# )\n# p"
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "chronicle",
+    "section": "",
+    "text": "Experimental - Work in progress\n\n\n\nThe purpose of this experimental package is to expose functionality to make it easy to read, filter and manipulate chronicle parquet files."
+  },
+  {
+    "objectID": "index.html#install",
+    "href": "index.html#install",
+    "title": "chronicle",
+    "section": "Install",
+    "text": "Install\nThe package is not yet available on PyPi.\npip install py_chronicle\nYou can install from github:\npip install git+https://github.com/andrie/py-chronicle"
+  },
+  {
+    "objectID": "index.html#how-chronicle-stores-data",
+    "href": "index.html#how-chronicle-stores-data",
+    "title": "chronicle",
+    "section": "How Chronicle stores data",
+    "text": "How Chronicle stores data\nChronicle collects and stores logs and metrics in a series of parquet files.\nUse read_chronicle() to read either logs or metrics, by specifying the path to the parquet set you need.\nThe file tree looks like this, with logs and metrics in separate folders inside v1.\n.\n└── v1/\n    ├── logs/\n    └── metrics/\nInside both logs and metrics the data is stored by date, separated by year, month and day.\n.\n└── v1/\n    ├── logs/\n    │   └── 2023/\n    │       ├── 02/\n    │       │   ├── 01\n    │       │   ├── 02\n    │       │   ├── 03\n    │       │   ├── 04\n    │       │   ├── 05\n    │       │   └── ...\n    │       ├── 03\n    │       ├── 04\n    │       └── ...\n    └── metrics/\n        └── 2023/\n            ├── 02/\n            │   ├── 01\n            │   ├── 02\n            │   ├── 03\n            │   ├── 04\n            │   ├── 05\n            │   └── ...\n            ├── 03\n            ├── 04\n            └── ..."
+  },
+  {
+    "objectID": "index.html#working-with-metrics",
+    "href": "index.html#working-with-metrics",
+    "title": "chronicle",
+    "section": "Working with metrics",
+    "text": "Working with metrics\nSome examples.\n\nscan_chronicle_metrics(\"./data\", \"2023/04/03\").head().collect()\n\n\nshape: (5, 13)\n\n\n\nservice\nhost\nos\nattributes\nname\ndescription\nunit\ntype\ntimestamp\nvalue_float\nvalue_int\nvalue_uint\nvalue_column\n\n\nstr\nstr\nstr\nlist[struct[2]]\nstr\nstr\nstr\nstr\ndatetime[ms]\nf64\ni64\nu64\nstr\n\n\n\n\n\"workbench-metr…\n\"rstudio-workbe…\n\"linux\"\n[]\n\"scrape_samples…\n\"The number of …\n\"\"\n\"gauge\"\n2023-04-03 16:02:20.574\n69.0\n0\n0\n\"value_float\"\n\n\n\"workbench-metr…\n\"rstudio-workbe…\n\"linux\"\n[{\"version\",\"go1.14.6\"}]\n\"go_info\"\n\"Information ab…\n\"\"\n\"gauge\"\n2023-04-03 16:02:20.574\n1.0\n0\n0\n\"value_float\"\n\n\n\"workbench-metr…\n\"rstudio-workbe…\n\"linux\"\n[]\n\"go_memstats_mc…\n\"Number of byte…\n\"\"\n\"gauge\"\n2023-04-03 16:02:20.574\n16384.0\n0\n0\n\"value_float\"\n\n\n\"workbench-metr…\n\"rstudio-workbe…\n\"linux\"\n[{\"host\",\"rstudio-workbench-6b9658c77f-mn8hj\"}]\n\"rstudio_system…\n\"Graphite metri…\n\"\"\n\"gauge\"\n2023-04-03 16:02:20.574\n0.0\n0\n0\n\"value_float\"\n\n\n\"workbench-metr…\n\"rstudio-workbe…\n\"linux\"\n[]\n\"go_memstats_ms…\n\"Number of byte…\n\"\"\n\"gauge\"\n2023-04-03 16:02:20.574\n65536.0\n0\n0\n\"value_float\"\n\n\n\n\n\n\n\nscan_chronicle_metrics(\"./data\", \"2023/04/03\").metrics.describe()\n\n\n\n\n\n\n\n\nservice\nname\ndescription\nvalue_column\n\n\n\n\n0\n\nsystem.cpu.time\nTotal CPU seconds broken down by different sta...\nvalue_float\n\n\n1\n\nsystem.memory.usage\nBytes of memory in use.\nvalue_int\n\n\n2\nconnect-metrics\ngo_goroutines\nNumber of goroutines that currently exist.\nvalue_float\n\n\n3\nconnect-metrics\ngo_info\nInformation about the Go environment.\nvalue_float\n\n\n4\nconnect-metrics\ngo_memstats_alloc_bytes\nNumber of bytes allocated and still in use.\nvalue_float\n\n\n...\n...\n...\n...\n...\n\n\n176\nworkbench-metrics\nscrape_series_added\nThe approximate number of new series in this s...\nvalue_float\n\n\n177\nworkbench-metrics\nstatsd_metric_mapper_cache_gets_total\nThe count of total metric cache gets.\nvalue_float\n\n\n178\nworkbench-metrics\nstatsd_metric_mapper_cache_hits_total\nThe count of total metric cache hits.\nvalue_float\n\n\n179\nworkbench-metrics\nstatsd_metric_mapper_cache_length\nThe count of unique metrics currently cached.\nvalue_float\n\n\n180\nworkbench-metrics\nup\nThe scraping was successful\nvalue_float\n\n\n\n\n181 rows × 4 columns\n\n\n\n\nscan_chronicle_metrics(\"./data\", \"2023/04/03\").metrics.filter(\"rsconnect_system_memory_used\", \"memory\").head()\n\n\n\n\n\n\n\n\nhost\ntimestamp\nrsconnect_system_memory_used"
+  },
+  {
+    "objectID": "index.html#plotting-metrics",
+    "href": "index.html#plotting-metrics",
+    "title": "chronicle",
+    "section": "Plotting metrics",
+    "text": "Plotting metrics\n\nfrom chronicle.plot import *\n\n\nscan_chronicle_metrics(\"./data\", \"2023/04/03\").metrics.plot(\"rsconnect_system_memory_used\", alias = \"memory\")\n\nUnable to display output for mime type(s): application/vnd.plotly.v1+json"
+  },
+  {
+    "objectID": "index.html#working-with-logs",
+    "href": "index.html#working-with-logs",
+    "title": "chronicle",
+    "section": "Working with logs",
+    "text": "Working with logs\nSome examples.\n\nscan_chronicle_logs(\"./data\",  \"2023/04/03\").head().collect()\n\n\nshape: (5, 6)\n\n\n\nservice\nhost\nos\nattributes\nbody\ntimestamp\n\n\nstr\nstr\nstr\nlist[struct[2]]\nstr\ndatetime[ms]\n\n\n\n\n\"workbench\"\n\"rstudio-workbe…\n\"linux\"\n[{\"data\",\"120\"}, {\"pid\",\"2.36E+02\"}, … {\"type\",\"session_suspend\"}]\n\"{\"pid\":236,\"us…\n2023-04-03 18:01:26.665\n\n\n\"workbench\"\n\"rstudio-workbe…\n\"linux\"\n[{\"data\",\"\"}, {\"pid\",\"2.36E+02\"}, … {\"type\",\"session_exit\"}]\n\"{\"pid\":236,\"us…\n2023-04-03 18:01:26.761\n\n\n\"connect\"\n\"rstudio-connec…\n\"linux\"\n[{\"user_role\",\"publisher\"}, {\"user_guid\",\"085ba4be-01b5-478b-877c-321368924c89\"}, … {\"type\",\"audit\"}]\n\"{\"action\":\"add…\n2023-04-03 19:30:35.698\n\n\n\"connect\"\n\"rstudio-connec…\n\"linux\"\n[{\"log.file.name\",\"audit.json\"}, {\"actor_description\",\"Auth Provider\"}, … {\"entry_id\",\"3.032E+03\"}]\n\"{\"action\":\"add…\n2023-04-03 19:30:35.698\n\n\n\"connect\"\n\"rstudio-connec…\n\"linux\"\n[{\"action\",\"add_group_member\"}, {\"actor_id\",\"0E+00\"}, … {\"log.file.name\",\"audit.json\"}]\n\"{\"action\":\"add…\n2023-04-03 19:30:35.698\n\n\n\n\n\n\n\nscan_chronicle_logs(\"./data\",  \"2023/04/03\").logs.filter_type(\"username\")"
+  },
+  {
+    "objectID": "core.html",
+    "href": "core.html",
+    "title": "core",
+    "section": "",
+    "text": "Chronicle collects and stores logs and metrics in a series of parquet files.\nUse scan_chronicle_logs() to read logs and scan_chronicle_logs() to read metrics, by specifying the path to the parquet set you need.\nThe file tree looks like this, with logs and metrics in separate folders inside v1.\n.\n└── v1/\n    ├── logs/\n    └── metrics/\nInside both logs and metrics the data is stored by date, separated by year, month and day.\n.\n└── v1/\n    ├── logs/\n    │   └── 2023/\n    │       ├── 02/\n    │       │   ├── 01\n    │       │   ├── 02\n    │       │   ├── 03\n    │       │   ├── 04\n    │       │   ├── 05\n    │       │   └── ...\n    │       ├── 03\n    │       ├── 04\n    │       └── ...\n    └── metrics/\n        └── 2023/\n            ├── 02/\n            │   ├── 01\n            │   ├── 02\n            │   ├── 03\n            │   ├── 04\n            │   ├── 05\n            │   └── ...\n            ├── 03\n            ├── 04\n            └── ..."
+  },
+  {
+    "objectID": "core.html#scan-chronicle-parquet-files",
+    "href": "core.html#scan-chronicle-parquet-files",
+    "title": "core",
+    "section": "",
+    "text": "Chronicle collects and stores logs and metrics in a series of parquet files.\nUse scan_chronicle_logs() to read logs and scan_chronicle_logs() to read metrics, by specifying the path to the parquet set you need.\nThe file tree looks like this, with logs and metrics in separate folders inside v1.\n.\n└── v1/\n    ├── logs/\n    └── metrics/\nInside both logs and metrics the data is stored by date, separated by year, month and day.\n.\n└── v1/\n    ├── logs/\n    │   └── 2023/\n    │       ├── 02/\n    │       │   ├── 01\n    │       │   ├── 02\n    │       │   ├── 03\n    │       │   ├── 04\n    │       │   ├── 05\n    │       │   └── ...\n    │       ├── 03\n    │       ├── 04\n    │       └── ...\n    └── metrics/\n        └── 2023/\n            ├── 02/\n            │   ├── 01\n            │   ├── 02\n            │   ├── 03\n            │   ├── 04\n            │   ├── 05\n            │   └── ...\n            ├── 03\n            ├── 04\n            └── ..."
+  },
+  {
+    "objectID": "core.html#using-the-scan-interface",
+    "href": "core.html#using-the-scan-interface",
+    "title": "core",
+    "section": "Using the scan interface",
+    "text": "Using the scan interface\n\nsource\n\nscan_chronicle\n\n scan_chronicle (path:str, type:str='', date:str=None, filename:str=None,\n                 version:str='v1')\n\nRead a chronicle parquet file into a polars LazyFrame.\n\n\n\n\n\n\n\n\n\n\nType\nDefault\nDetails\n\n\n\n\npath\nstr\n\nPath to dataset,\n\n\ntype\nstr\n\nmust be metrics or logs\n\n\ndate\nstr\nNone\ndate in format YYYY/MM/DD\n\n\nfilename\nstr\nNone\nname of parquet file. If empty, will be inferred.\n\n\nversion\nstr\nv1\ncurrently must be v1\n\n\nReturns\nLazyFrame\n\n\n\n\n\n\nscan_chronicle(\"./data\", \"metrics\", \"2023/04/03\")\n\n\nsource\n\n\nscan_chronicle_logs\n\n scan_chronicle_logs (path:NoneType, date:str=None, version:str='v1')\n\nRead a chronicle logs parquet file into a polars dataframe.\n\n\n\n\nType\nDefault\nDetails\n\n\n\n\npath\nNone\n\nPath to dataset,\n\n\ndate\nstr\nNone\ndate in format YYYY/MM/DD\n\n\nversion\nstr\nv1\ncurrently must be v1\n\n\nReturns\nDataFrame\n\n\n\n\n\n\nsource\n\n\nscan_chronicle_metrics\n\n scan_chronicle_metrics (path:str, date:str=None, version:str='v1')\n\nRead a chronicle metrics parquet file into a polars dataframe.\n\n\n\n\nType\nDefault\nDetails\n\n\n\n\npath\nstr\n\nPath to dataset,\n\n\ndate\nstr\nNone\ndate in format YYYY/MM/DD\n\n\nversion\nstr\nv1\ncurrently must be v1\n\n\nReturns\nDataFrame\n\n\n\n\n\n\nz = scan_chronicle_metrics(\"./data\", \"2023/04/03\")\nassert type(z) == pl.LazyFrame\nassert z.collect().columns == [\n    'service',\n    'host',\n    'os',\n    'attributes',\n    'name',\n    'description',\n    'unit',\n    'type',\n    'timestamp',\n    'value_float',\n    'value_int',\n    'value_uint',\n    'value_column'\n]\n\n\nz = scan_chronicle_logs(\"./data\", \"2023/04/03\")\nassert type(z) == pl.LazyFrame\nassert z.collect().columns == [\n    'service', \n    'host', \n    'os', \n    'attributes', \n    'body', \n    'timestamp'\n]"
+  },
+  {
+    "objectID": "core.html#analyse-metrics",
+    "href": "core.html#analyse-metrics",
+    "title": "core",
+    "section": "Analyse metrics",
+    "text": "Analyse metrics\n\nsource\n\nChronicleMetrics\n\n ChronicleMetrics (ldf:polars.lazyframe.frame.LazyFrame)\n\nInitialise a chronicle metrics class\n\n\n\n\nType\nDetails\n\n\n\n\nldf\nLazyFrame\nA polars DataFrame\n\n\nReturns\nLazyFrame\n\n\n\n\nUse .metrics.describe() to get a DataFrame of the unique metrics in the metrics data, containing the service, name and description of each metric.\n\nsource\n\n\nChronicleMetrics.describe\n\n ChronicleMetrics.describe ()\n\nReads metrics dataframe and returns a pandas dataframe with summary of service, name and description of all metrics\n\nm = scan_chronicle_metrics(\"./data\", \"2023/04/03\").metrics.describe()\nassert list(m) == ['service', 'name', 'description', 'value_column']\nm\n\nUse .metrics.filter() to filter the DataFrame on the name column.\n\nsource\n\n\nChronicleMetrics.filter\n\n ChronicleMetrics.filter (name:str, service:str=None, alias:str=None)\n\nExtract a single metric from a metrics dataframe\n\n\n\n\nType\nDefault\nDetails\n\n\n\n\nname\nstr\n\nname of metric to extract\n\n\nservice\nstr\nNone\nservice to extract metric from\n\n\nalias\nstr\nNone\nalias to use for new column\n\n\nReturns\nDataFrame\n\n\n\n\n\n\nm = scan_chronicle_metrics(\"./data\", \"2023/04/03\").metrics.filter(\"rsconnect_system_memory_used\")\nassert type(m) == pd.DataFrame\nassert list(m) == ['host', 'timestamp', 'rsconnect_system_memory_used']\n\nm = scan_chronicle_metrics(\"./data\", \"2023/04/03\").metrics.filter(\"rsconnect_system_memory_used\", alias=\"memory\")\nassert type(m) == pd.DataFrame\nassert list(m) == ['host', 'timestamp', 'memory']\n\nm = scan_chronicle_metrics(\"./data\", \"2023/04/03\").metrics.filter(\"rsconnect_system_memory_used\", service = \"connect-metrics\", alias = \"memory\")\nassert type(m) == pd.DataFrame\nassert list(m) == ['host', 'timestamp', 'memory']"
+  },
+  {
+    "objectID": "core.html#analyse-logs",
+    "href": "core.html#analyse-logs",
+    "title": "core",
+    "section": "Analyse logs",
+    "text": "Analyse logs\n\nsource\n\nChronicleLogs\n\n ChronicleLogs (df:polars.dataframe.frame.DataFrame)\n\nInitialise a chronicle logs DataFrame\n\n\n\n\nType\nDetails\n\n\n\n\ndf\nDataFrame\nA polars data frame\n\n\nReturns\nDataFrame\n\n\n\n\n\n\nFilter logs on type\nYou can use logs/filter_type() to filter logs on the type column.\n\nscan_chronicle_logs(\"./data\").head(1).explode(\"attributes\").collect()\n\n\nsource\n\n\nChronicleLogs.filter_type\n\n ChronicleLogs.filter_type (value:str)\n\nExtract all logs where type == value\n\n\n\n\nType\nDetails\n\n\n\n\nvalue\nstr\nValue to extract\n\n\nReturns\nDataFrame\n\n\n\n\n\n# scan_chronicle_logs(\"./data\").logs.filter_type(\"auth_login\")\nlogs = scan_chronicle_logs(\"./data\").logs.filter_type(\"username\")\nassert type(logs) == pl.DataFrame\n\n\n\nUnique Connect actions\n\nsource\n\n\nChronicleLogs.unique_connect_actions\n\n ChronicleLogs.unique_connect_actions ()\n\nExtract a sample of unique connect actions\n\nscan_chronicle_logs(\"./data\").logs.unique_connect_actions()\n# assert type(logs) == pl.DataFrame\n\n\n\nConnect logins\n\nsource\n\n\nChronicleLogs.connect_logins\n\n ChronicleLogs.connect_logins ()\n\nExtract Connect login logs\n\npath = \"./data\"\nscan_chronicle_logs(path).logs.connect_logins()\n\n\n\nExtract connect audit logs\n\nsource\n\n\nChronicleLogs.extract_connect_audit_logs\n\n ChronicleLogs.extract_connect_audit_logs (type:str)\n\nExtract Connect audit logs\n\npath = \"./data\"\nscan_chronicle_logs(path).logs.extract_connect_audit_logs(\"user_login\")\n\n\n\nUnique workbench types\n\nsource\n\n\nChronicleLogs.unique_workbench_types\n\n ChronicleLogs.unique_workbench_types ()\n\nExtract a sample of unique workbench types\n\nscan_chronicle_logs(\"./data\").logs.unique_workbench_types()\n# assert type(logs) == pl.DataFrame\n\n\n\nWorkbench logins\n\nsource\n\n\nChronicleLogs.workbench_logins\n\n ChronicleLogs.workbench_logins ()\n\nExtract Workbench login logs\n\npath = \"./data\"\nscan_chronicle_logs(path).logs.workbench_logins()\n\n\n\nExtract workbench audit logs\n\nsource\n\n\nChronicleLogs.extract_workbench_audit_logs\n\n ChronicleLogs.extract_workbench_audit_logs (type:str)\n\nExtract Workbench login logs\n\npath = \"./data\"\nscan_chronicle_logs(path).logs.extract_workbench_audit_logs(\"session_start\")\n\n\nsource\n\n\nChronicleLogs.extract_workbench_audit_cols\n\n ChronicleLogs.extract_workbench_audit_cols (type:str)\n\nExtract Workbench audit columns\n\nscan_chronicle_logs(\"./data\").logs.extract_workbench_audit_cols(\"session_quit\")"
+  }
+]

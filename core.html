@@ -1,0 +1,1001 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.361">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="description" content="Scan and query chronicle parquet files.">
+
+<title>chronicle - core</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="styles.css">
+<meta property="og:title" content="chronicle - core">
+<meta property="og:description" content="Scan and query chronicle parquet files.">
+<meta property="og:site-name" content="chronicle">
+<meta name="twitter:title" content="chronicle - core">
+<meta name="twitter:description" content="Scan and query chronicle parquet files.">
+<meta name="twitter:card" content="summary">
+</head>
+
+<body class="nav-sidebar floating nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">chronicle</span>
+    </a>
+  </div>
+        <div class="quarto-navbar-tools ms-auto">
+</div>
+          <div id="quarto-search" class="" title="Search"></div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./core.html">core</a></li></ol></nav>
+      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+      </a>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto">
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">chronicle</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./core.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">core</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./io.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">io</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./plot.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">plot</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./read.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">read</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#scan-chronicle-parquet-files" id="toc-scan-chronicle-parquet-files" class="nav-link active" data-scroll-target="#scan-chronicle-parquet-files">Scan chronicle parquet files</a></li>
+  <li><a href="#using-the-scan-interface" id="toc-using-the-scan-interface" class="nav-link" data-scroll-target="#using-the-scan-interface">Using the scan interface</a>
+  <ul class="collapse">
+  <li><a href="#scan_chronicle" id="toc-scan_chronicle" class="nav-link" data-scroll-target="#scan_chronicle">scan_chronicle</a></li>
+  <li><a href="#scan_chronicle_logs" id="toc-scan_chronicle_logs" class="nav-link" data-scroll-target="#scan_chronicle_logs">scan_chronicle_logs</a></li>
+  <li><a href="#scan_chronicle_metrics" id="toc-scan_chronicle_metrics" class="nav-link" data-scroll-target="#scan_chronicle_metrics">scan_chronicle_metrics</a></li>
+  </ul></li>
+  <li><a href="#analyse-metrics" id="toc-analyse-metrics" class="nav-link" data-scroll-target="#analyse-metrics">Analyse metrics</a>
+  <ul class="collapse">
+  <li><a href="#chroniclemetrics" id="toc-chroniclemetrics" class="nav-link" data-scroll-target="#chroniclemetrics">ChronicleMetrics</a></li>
+  <li><a href="#chroniclemetrics.describe" id="toc-chroniclemetrics.describe" class="nav-link" data-scroll-target="#chroniclemetrics.describe">ChronicleMetrics.describe</a></li>
+  <li><a href="#chroniclemetrics.filter" id="toc-chroniclemetrics.filter" class="nav-link" data-scroll-target="#chroniclemetrics.filter">ChronicleMetrics.filter</a></li>
+  </ul></li>
+  <li><a href="#analyse-logs" id="toc-analyse-logs" class="nav-link" data-scroll-target="#analyse-logs">Analyse logs</a>
+  <ul class="collapse">
+  <li><a href="#chroniclelogs" id="toc-chroniclelogs" class="nav-link" data-scroll-target="#chroniclelogs">ChronicleLogs</a></li>
+  <li><a href="#filter-logs-on-type" id="toc-filter-logs-on-type" class="nav-link" data-scroll-target="#filter-logs-on-type">Filter logs on type</a></li>
+  <li><a href="#chroniclelogs.filter_type" id="toc-chroniclelogs.filter_type" class="nav-link" data-scroll-target="#chroniclelogs.filter_type">ChronicleLogs.filter_type</a></li>
+  <li><a href="#unique-connect-actions" id="toc-unique-connect-actions" class="nav-link" data-scroll-target="#unique-connect-actions">Unique Connect actions</a></li>
+  <li><a href="#chroniclelogs.unique_connect_actions" id="toc-chroniclelogs.unique_connect_actions" class="nav-link" data-scroll-target="#chroniclelogs.unique_connect_actions">ChronicleLogs.unique_connect_actions</a></li>
+  <li><a href="#connect-logins" id="toc-connect-logins" class="nav-link" data-scroll-target="#connect-logins">Connect logins</a></li>
+  <li><a href="#chroniclelogs.connect_logins" id="toc-chroniclelogs.connect_logins" class="nav-link" data-scroll-target="#chroniclelogs.connect_logins">ChronicleLogs.connect_logins</a></li>
+  <li><a href="#extract-connect-audit-logs" id="toc-extract-connect-audit-logs" class="nav-link" data-scroll-target="#extract-connect-audit-logs">Extract connect audit logs</a></li>
+  <li><a href="#chroniclelogs.extract_connect_audit_logs" id="toc-chroniclelogs.extract_connect_audit_logs" class="nav-link" data-scroll-target="#chroniclelogs.extract_connect_audit_logs">ChronicleLogs.extract_connect_audit_logs</a></li>
+  <li><a href="#unique-workbench-types" id="toc-unique-workbench-types" class="nav-link" data-scroll-target="#unique-workbench-types">Unique workbench types</a></li>
+  <li><a href="#chroniclelogs.unique_workbench_types" id="toc-chroniclelogs.unique_workbench_types" class="nav-link" data-scroll-target="#chroniclelogs.unique_workbench_types">ChronicleLogs.unique_workbench_types</a></li>
+  <li><a href="#workbench-logins" id="toc-workbench-logins" class="nav-link" data-scroll-target="#workbench-logins">Workbench logins</a></li>
+  <li><a href="#chroniclelogs.workbench_logins" id="toc-chroniclelogs.workbench_logins" class="nav-link" data-scroll-target="#chroniclelogs.workbench_logins">ChronicleLogs.workbench_logins</a></li>
+  <li><a href="#extract-workbench-audit-logs" id="toc-extract-workbench-audit-logs" class="nav-link" data-scroll-target="#extract-workbench-audit-logs">Extract workbench audit logs</a></li>
+  <li><a href="#chroniclelogs.extract_workbench_audit_logs" id="toc-chroniclelogs.extract_workbench_audit_logs" class="nav-link" data-scroll-target="#chroniclelogs.extract_workbench_audit_logs">ChronicleLogs.extract_workbench_audit_logs</a></li>
+  <li><a href="#chroniclelogs.extract_workbench_audit_cols" id="toc-chroniclelogs.extract_workbench_audit_cols" class="nav-link" data-scroll-target="#chroniclelogs.extract_workbench_audit_cols">ChronicleLogs.extract_workbench_audit_cols</a></li>
+  </ul></li>
+  </ul>
+<div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/andrie/py-chronicle/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">core</h1>
+</div>
+
+<div>
+  <div class="description">
+    Scan and query chronicle parquet files.
+  </div>
+</div>
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<!-- WARNING: THIS FILE WAS AUTOGENERATED! DO NOT EDIT! -->
+<section id="scan-chronicle-parquet-files" class="level2">
+<h2 class="anchored" data-anchor-id="scan-chronicle-parquet-files">Scan chronicle parquet files</h2>
+<p>Chronicle collects and stores logs and metrics in a series of parquet files.</p>
+<p>Use <code>scan_chronicle_logs()</code> to read logs and <code>scan_chronicle_logs()</code> to read metrics, by specifying the path to the parquet set you need.</p>
+<p>The file tree looks like this, with <code>logs</code> and <code>metrics</code> in separate folders inside <code>v1</code>.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="bu">.</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="ex">└──</span> v1/</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    <span class="ex">├──</span> logs/</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    <span class="ex">└──</span> metrics/</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Inside both <code>logs</code> and <code>metrics</code> the data is stored by date, separated by year, month and day.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="bu">.</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="ex">└──</span> v1/</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    <span class="ex">├──</span> logs/</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    <span class="ex">│</span>   └── 2023/</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    <span class="ex">│</span>       ├── 02/</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    <span class="ex">│</span>       │   ├── 01</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    <span class="ex">│</span>       │   ├── 02</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>    <span class="ex">│</span>       │   ├── 03</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>    <span class="ex">│</span>       │   ├── 04</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>    <span class="ex">│</span>       │   ├── 05</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>    <span class="ex">│</span>       │   └── ...</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>    <span class="ex">│</span>       ├── 03</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>    <span class="ex">│</span>       ├── 04</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>    <span class="ex">│</span>       └── ...</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>    <span class="ex">└──</span> metrics/</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>        <span class="ex">└──</span> 2023/</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>            <span class="ex">├──</span> 02/</span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>            <span class="ex">│</span>   ├── 01</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>            <span class="ex">│</span>   ├── 02</span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>            <span class="ex">│</span>   ├── 03</span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>            <span class="ex">│</span>   ├── 04</span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>            <span class="ex">│</span>   ├── 05</span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>            <span class="ex">│</span>   └── ...</span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>            <span class="ex">├──</span> 03</span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>            <span class="ex">├──</span> 04</span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>            <span class="ex">└──</span> ...</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="using-the-scan-interface" class="level2">
+<h2 class="anchored" data-anchor-id="using-the-scan-interface">Using the scan interface</h2>
+<hr>
+<p><a href="https://github.com/andrie/py-chronicle/blob/main/chronicle/core.py#L16" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<section id="scan_chronicle" class="level3">
+<h3 class="anchored" data-anchor-id="scan_chronicle">scan_chronicle</h3>
+<blockquote class="blockquote">
+<pre><code> scan_chronicle (path:str, type:str='', date:str=None, filename:str=None,
+                 version:str='v1')</code></pre>
+</blockquote>
+<p>Read a chronicle parquet file into a polars LazyFrame.</p>
+<table class="table">
+<colgroup>
+<col style="width: 6%">
+<col style="width: 25%">
+<col style="width: 34%">
+<col style="width: 34%">
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th><strong>Type</strong></th>
+<th><strong>Default</strong></th>
+<th><strong>Details</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>path</td>
+<td>str</td>
+<td></td>
+<td>Path to dataset,</td>
+</tr>
+<tr class="even">
+<td>type</td>
+<td>str</td>
+<td></td>
+<td>must be <code>metrics</code> or <code>logs</code></td>
+</tr>
+<tr class="odd">
+<td>date</td>
+<td>str</td>
+<td>None</td>
+<td>date in format <code>YYYY/MM/DD</code></td>
+</tr>
+<tr class="even">
+<td>filename</td>
+<td>str</td>
+<td>None</td>
+<td>name of parquet file. If empty, will be inferred.</td>
+</tr>
+<tr class="odd">
+<td>version</td>
+<td>str</td>
+<td>v1</td>
+<td>currently must be <code>v1</code></td>
+</tr>
+<tr class="even">
+<td><strong>Returns</strong></td>
+<td><strong>LazyFrame</strong></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>scan_chronicle(<span class="st">"./data"</span>, <span class="st">"metrics"</span>, <span class="st">"2023/04/03"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<hr>
+<p><a href="https://github.com/andrie/py-chronicle/blob/main/chronicle/core.py#L47" target="_blank" style="float:right; font-size:smaller">source</a></p>
+</section>
+<section id="scan_chronicle_logs" class="level3">
+<h3 class="anchored" data-anchor-id="scan_chronicle_logs">scan_chronicle_logs</h3>
+<blockquote class="blockquote">
+<pre><code> scan_chronicle_logs (path:NoneType, date:str=None, version:str='v1')</code></pre>
+</blockquote>
+<p>Read a chronicle logs parquet file into a polars dataframe.</p>
+<table class="table">
+<thead>
+<tr class="header">
+<th></th>
+<th><strong>Type</strong></th>
+<th><strong>Default</strong></th>
+<th><strong>Details</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>path</td>
+<td>None</td>
+<td></td>
+<td>Path to dataset,</td>
+</tr>
+<tr class="even">
+<td>date</td>
+<td>str</td>
+<td>None</td>
+<td>date in format <code>YYYY/MM/DD</code></td>
+</tr>
+<tr class="odd">
+<td>version</td>
+<td>str</td>
+<td>v1</td>
+<td>currently must be <code>v1</code></td>
+</tr>
+<tr class="even">
+<td><strong>Returns</strong></td>
+<td><strong>DataFrame</strong></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<hr>
+<p><a href="https://github.com/andrie/py-chronicle/blob/main/chronicle/core.py#L39" target="_blank" style="float:right; font-size:smaller">source</a></p>
+</section>
+<section id="scan_chronicle_metrics" class="level3">
+<h3 class="anchored" data-anchor-id="scan_chronicle_metrics">scan_chronicle_metrics</h3>
+<blockquote class="blockquote">
+<pre><code> scan_chronicle_metrics (path:str, date:str=None, version:str='v1')</code></pre>
+</blockquote>
+<p>Read a chronicle metrics parquet file into a polars dataframe.</p>
+<table class="table">
+<thead>
+<tr class="header">
+<th></th>
+<th><strong>Type</strong></th>
+<th><strong>Default</strong></th>
+<th><strong>Details</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>path</td>
+<td>str</td>
+<td></td>
+<td>Path to dataset,</td>
+</tr>
+<tr class="even">
+<td>date</td>
+<td>str</td>
+<td>None</td>
+<td>date in format <code>YYYY/MM/DD</code></td>
+</tr>
+<tr class="odd">
+<td>version</td>
+<td>str</td>
+<td>v1</td>
+<td>currently must be <code>v1</code></td>
+</tr>
+<tr class="even">
+<td><strong>Returns</strong></td>
+<td><strong>DataFrame</strong></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>z <span class="op">=</span> scan_chronicle_metrics(<span class="st">"./data"</span>, <span class="st">"2023/04/03"</span>)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> <span class="bu">type</span>(z) <span class="op">==</span> pl.LazyFrame</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> z.collect().columns <span class="op">==</span> [</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">'service'</span>,</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">'host'</span>,</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">'os'</span>,</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">'attributes'</span>,</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">'name'</span>,</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">'description'</span>,</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>    <span class="st">'unit'</span>,</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>    <span class="st">'type'</span>,</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>    <span class="st">'timestamp'</span>,</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>    <span class="st">'value_float'</span>,</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>    <span class="st">'value_int'</span>,</span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>    <span class="st">'value_uint'</span>,</span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>    <span class="st">'value_column'</span></span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>z <span class="op">=</span> scan_chronicle_logs(<span class="st">"./data"</span>, <span class="st">"2023/04/03"</span>)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> <span class="bu">type</span>(z) <span class="op">==</span> pl.LazyFrame</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> z.collect().columns <span class="op">==</span> [</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">'service'</span>, </span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">'host'</span>, </span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">'os'</span>, </span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">'attributes'</span>, </span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">'body'</span>, </span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">'timestamp'</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+</section>
+<section id="analyse-metrics" class="level2">
+<h2 class="anchored" data-anchor-id="analyse-metrics">Analyse metrics</h2>
+<hr>
+<p><a href="https://github.com/andrie/py-chronicle/blob/main/chronicle/core.py#L58" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<section id="chroniclemetrics" class="level3">
+<h3 class="anchored" data-anchor-id="chroniclemetrics">ChronicleMetrics</h3>
+<blockquote class="blockquote">
+<pre><code> ChronicleMetrics (ldf:polars.lazyframe.frame.LazyFrame)</code></pre>
+</blockquote>
+<p>Initialise a chronicle metrics class</p>
+<table class="table">
+<thead>
+<tr class="header">
+<th></th>
+<th><strong>Type</strong></th>
+<th><strong>Details</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>ldf</td>
+<td>LazyFrame</td>
+<td>A <code>polars</code> DataFrame</td>
+</tr>
+<tr class="even">
+<td><strong>Returns</strong></td>
+<td><strong>LazyFrame</strong></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>Use <code>.metrics.describe()</code> to get a DataFrame of the unique metrics in the metrics data, containing the <code>service</code>, <code>name</code> and <code>description</code> of each metric.</p>
+<hr>
+<p><a href="https://github.com/andrie/py-chronicle/blob/main/chronicle/core.py#L69" target="_blank" style="float:right; font-size:smaller">source</a></p>
+</section>
+<section id="chroniclemetrics.describe" class="level3">
+<h3 class="anchored" data-anchor-id="chroniclemetrics.describe">ChronicleMetrics.describe</h3>
+<blockquote class="blockquote">
+<pre><code> ChronicleMetrics.describe ()</code></pre>
+</blockquote>
+<p>Reads metrics dataframe and returns a pandas dataframe with summary of service, name and description of all metrics</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>m <span class="op">=</span> scan_chronicle_metrics(<span class="st">"./data"</span>, <span class="st">"2023/04/03"</span>).metrics.describe()</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> <span class="bu">list</span>(m) <span class="op">==</span> [<span class="st">'service'</span>, <span class="st">'name'</span>, <span class="st">'description'</span>, <span class="st">'value_column'</span>]</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>m</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Use <code>.metrics.filter()</code> to filter the DataFrame on the <code>name</code> column.</p>
+<hr>
+<p><a href="https://github.com/andrie/py-chronicle/blob/main/chronicle/core.py#L90" target="_blank" style="float:right; font-size:smaller">source</a></p>
+</section>
+<section id="chroniclemetrics.filter" class="level3">
+<h3 class="anchored" data-anchor-id="chroniclemetrics.filter">ChronicleMetrics.filter</h3>
+<blockquote class="blockquote">
+<pre><code> ChronicleMetrics.filter (name:str, service:str=None, alias:str=None)</code></pre>
+</blockquote>
+<p>Extract a single metric from a metrics dataframe</p>
+<table class="table">
+<thead>
+<tr class="header">
+<th></th>
+<th><strong>Type</strong></th>
+<th><strong>Default</strong></th>
+<th><strong>Details</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>name</td>
+<td>str</td>
+<td></td>
+<td>name of metric to extract</td>
+</tr>
+<tr class="even">
+<td>service</td>
+<td>str</td>
+<td>None</td>
+<td>service to extract metric from</td>
+</tr>
+<tr class="odd">
+<td>alias</td>
+<td>str</td>
+<td>None</td>
+<td>alias to use for new column</td>
+</tr>
+<tr class="even">
+<td><strong>Returns</strong></td>
+<td><strong>DataFrame</strong></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>m <span class="op">=</span> scan_chronicle_metrics(<span class="st">"./data"</span>, <span class="st">"2023/04/03"</span>).metrics.<span class="bu">filter</span>(<span class="st">"rsconnect_system_memory_used"</span>)</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> <span class="bu">type</span>(m) <span class="op">==</span> pd.DataFrame</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> <span class="bu">list</span>(m) <span class="op">==</span> [<span class="st">'host'</span>, <span class="st">'timestamp'</span>, <span class="st">'rsconnect_system_memory_used'</span>]</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>m <span class="op">=</span> scan_chronicle_metrics(<span class="st">"./data"</span>, <span class="st">"2023/04/03"</span>).metrics.<span class="bu">filter</span>(<span class="st">"rsconnect_system_memory_used"</span>, alias<span class="op">=</span><span class="st">"memory"</span>)</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> <span class="bu">type</span>(m) <span class="op">==</span> pd.DataFrame</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> <span class="bu">list</span>(m) <span class="op">==</span> [<span class="st">'host'</span>, <span class="st">'timestamp'</span>, <span class="st">'memory'</span>]</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>m <span class="op">=</span> scan_chronicle_metrics(<span class="st">"./data"</span>, <span class="st">"2023/04/03"</span>).metrics.<span class="bu">filter</span>(<span class="st">"rsconnect_system_memory_used"</span>, service <span class="op">=</span> <span class="st">"connect-metrics"</span>, alias <span class="op">=</span> <span class="st">"memory"</span>)</span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> <span class="bu">type</span>(m) <span class="op">==</span> pd.DataFrame</span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> <span class="bu">list</span>(m) <span class="op">==</span> [<span class="st">'host'</span>, <span class="st">'timestamp'</span>, <span class="st">'memory'</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+</section>
+<section id="analyse-logs" class="level2">
+<h2 class="anchored" data-anchor-id="analyse-logs">Analyse logs</h2>
+<hr>
+<p><a href="https://github.com/andrie/py-chronicle/blob/main/chronicle/core.py#L124" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<section id="chroniclelogs" class="level3">
+<h3 class="anchored" data-anchor-id="chroniclelogs">ChronicleLogs</h3>
+<blockquote class="blockquote">
+<pre><code> ChronicleLogs (df:polars.dataframe.frame.DataFrame)</code></pre>
+</blockquote>
+<p>Initialise a chronicle logs DataFrame</p>
+<table class="table">
+<thead>
+<tr class="header">
+<th></th>
+<th><strong>Type</strong></th>
+<th><strong>Details</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>df</td>
+<td>DataFrame</td>
+<td>A polars data frame</td>
+</tr>
+<tr class="even">
+<td><strong>Returns</strong></td>
+<td><strong>DataFrame</strong></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="filter-logs-on-type" class="level3">
+<h3 class="anchored" data-anchor-id="filter-logs-on-type">Filter logs on type</h3>
+<p>You can use <code>logs/filter_type()</code> to filter logs on the <code>type</code> column.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>scan_chronicle_logs(<span class="st">"./data"</span>).head(<span class="dv">1</span>).explode(<span class="st">"attributes"</span>).collect()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<hr>
+<p><a href="https://github.com/andrie/py-chronicle/blob/main/chronicle/core.py#L133" target="_blank" style="float:right; font-size:smaller">source</a></p>
+</section>
+<section id="chroniclelogs.filter_type" class="level3">
+<h3 class="anchored" data-anchor-id="chroniclelogs.filter_type">ChronicleLogs.filter_type</h3>
+<blockquote class="blockquote">
+<pre><code> ChronicleLogs.filter_type (value:str)</code></pre>
+</blockquote>
+<p>Extract all logs where type == value</p>
+<table class="table">
+<thead>
+<tr class="header">
+<th></th>
+<th><strong>Type</strong></th>
+<th><strong>Details</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>value</td>
+<td>str</td>
+<td>Value to extract</td>
+</tr>
+<tr class="even">
+<td><strong>Returns</strong></td>
+<td><strong>DataFrame</strong></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># scan_chronicle_logs("./data").logs.filter_type("auth_login")</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>logs <span class="op">=</span> scan_chronicle_logs(<span class="st">"./data"</span>).logs.filter_type(<span class="st">"username"</span>)</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> <span class="bu">type</span>(logs) <span class="op">==</span> pl.DataFrame</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="unique-connect-actions" class="level3">
+<h3 class="anchored" data-anchor-id="unique-connect-actions">Unique Connect actions</h3>
+<hr>
+<p><a href="https://github.com/andrie/py-chronicle/blob/main/chronicle/core.py#L151" target="_blank" style="float:right; font-size:smaller">source</a></p>
+</section>
+<section id="chroniclelogs.unique_connect_actions" class="level3">
+<h3 class="anchored" data-anchor-id="chroniclelogs.unique_connect_actions">ChronicleLogs.unique_connect_actions</h3>
+<blockquote class="blockquote">
+<pre><code> ChronicleLogs.unique_connect_actions ()</code></pre>
+</blockquote>
+<p>Extract a sample of unique connect actions</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>scan_chronicle_logs(<span class="st">"./data"</span>).logs.unique_connect_actions()</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="co"># assert type(logs) == pl.DataFrame</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="connect-logins" class="level3">
+<h3 class="anchored" data-anchor-id="connect-logins">Connect logins</h3>
+<hr>
+<p><a href="https://github.com/andrie/py-chronicle/blob/main/chronicle/core.py#L171" target="_blank" style="float:right; font-size:smaller">source</a></p>
+</section>
+<section id="chroniclelogs.connect_logins" class="level3">
+<h3 class="anchored" data-anchor-id="chroniclelogs.connect_logins">ChronicleLogs.connect_logins</h3>
+<blockquote class="blockquote">
+<pre><code> ChronicleLogs.connect_logins ()</code></pre>
+</blockquote>
+<p>Extract Connect login logs</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>path <span class="op">=</span> <span class="st">"./data"</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>scan_chronicle_logs(path).logs.connect_logins()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="extract-connect-audit-logs" class="level3">
+<h3 class="anchored" data-anchor-id="extract-connect-audit-logs">Extract connect audit logs</h3>
+<hr>
+<p><a href="https://github.com/andrie/py-chronicle/blob/main/chronicle/core.py#L194" target="_blank" style="float:right; font-size:smaller">source</a></p>
+</section>
+<section id="chroniclelogs.extract_connect_audit_logs" class="level3">
+<h3 class="anchored" data-anchor-id="chroniclelogs.extract_connect_audit_logs">ChronicleLogs.extract_connect_audit_logs</h3>
+<blockquote class="blockquote">
+<pre><code> ChronicleLogs.extract_connect_audit_logs (type:str)</code></pre>
+</blockquote>
+<p>Extract Connect audit logs</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>path <span class="op">=</span> <span class="st">"./data"</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>scan_chronicle_logs(path).logs.extract_connect_audit_logs(<span class="st">"user_login"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="unique-workbench-types" class="level3">
+<h3 class="anchored" data-anchor-id="unique-workbench-types">Unique workbench types</h3>
+<hr>
+<p><a href="https://github.com/andrie/py-chronicle/blob/main/chronicle/core.py#L221" target="_blank" style="float:right; font-size:smaller">source</a></p>
+</section>
+<section id="chroniclelogs.unique_workbench_types" class="level3">
+<h3 class="anchored" data-anchor-id="chroniclelogs.unique_workbench_types">ChronicleLogs.unique_workbench_types</h3>
+<blockquote class="blockquote">
+<pre><code> ChronicleLogs.unique_workbench_types ()</code></pre>
+</blockquote>
+<p>Extract a sample of unique workbench types</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>scan_chronicle_logs(<span class="st">"./data"</span>).logs.unique_workbench_types()</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="co"># assert type(logs) == pl.DataFrame</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="workbench-logins" class="level3">
+<h3 class="anchored" data-anchor-id="workbench-logins">Workbench logins</h3>
+<hr>
+<p><a href="https://github.com/andrie/py-chronicle/blob/main/chronicle/core.py#L240" target="_blank" style="float:right; font-size:smaller">source</a></p>
+</section>
+<section id="chroniclelogs.workbench_logins" class="level3">
+<h3 class="anchored" data-anchor-id="chroniclelogs.workbench_logins">ChronicleLogs.workbench_logins</h3>
+<blockquote class="blockquote">
+<pre><code> ChronicleLogs.workbench_logins ()</code></pre>
+</blockquote>
+<p>Extract Workbench login logs</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>path <span class="op">=</span> <span class="st">"./data"</span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>scan_chronicle_logs(path).logs.workbench_logins()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="extract-workbench-audit-logs" class="level3">
+<h3 class="anchored" data-anchor-id="extract-workbench-audit-logs">Extract workbench audit logs</h3>
+<hr>
+<p><a href="https://github.com/andrie/py-chronicle/blob/main/chronicle/core.py#L262" target="_blank" style="float:right; font-size:smaller">source</a></p>
+</section>
+<section id="chroniclelogs.extract_workbench_audit_logs" class="level3">
+<h3 class="anchored" data-anchor-id="chroniclelogs.extract_workbench_audit_logs">ChronicleLogs.extract_workbench_audit_logs</h3>
+<blockquote class="blockquote">
+<pre><code> ChronicleLogs.extract_workbench_audit_logs (type:str)</code></pre>
+</blockquote>
+<p>Extract Workbench login logs</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>path <span class="op">=</span> <span class="st">"./data"</span></span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>scan_chronicle_logs(path).logs.extract_workbench_audit_logs(<span class="st">"session_start"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<hr>
+<p><a href="https://github.com/andrie/py-chronicle/blob/main/chronicle/core.py#L286" target="_blank" style="float:right; font-size:smaller">source</a></p>
+</section>
+<section id="chroniclelogs.extract_workbench_audit_cols" class="level3">
+<h3 class="anchored" data-anchor-id="chroniclelogs.extract_workbench_audit_cols">ChronicleLogs.extract_workbench_audit_cols</h3>
+<blockquote class="blockquote">
+<pre><code> ChronicleLogs.extract_workbench_audit_cols (type:str)</code></pre>
+</blockquote>
+<p>Extract Workbench audit columns</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>scan_chronicle_logs(<span class="st">"./data"</span>).logs.extract_workbench_audit_cols(<span class="st">"session_quit"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>
